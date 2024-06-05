@@ -1,0 +1,658 @@
+<main id="main" class="main">
+    <section class="section dashboard" style="min-height: 86.5vh;">
+        <div class="row">
+            <!-- Left side columns -->
+            <div class="col-md-12">
+                <div class="btn-group relative">
+                    <button class="btn dropdown_btn dropdown1 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Location
+                    </button>
+                    <div class="dropdown_location drop_down">
+                        <h3>Location</h3>
+
+                        <form id="locationForm">
+                        <div *ngFor="let loc of location; ">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" (change)="locationFilter($event)"  type="checkbox" value={{loc}} name="locations"
+                                        id="flex_{{loc}}">
+                                    <label class="form-check-label" for="flex_{{loc}}">
+                                        {{loc}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="text-center drop_down_bottom">
+                                <a id="locationCancel">Cancel</a>
+                                <button role="button" class="dropdown_btn apply_btn" (click)="submitLoc()" type="submit">Apply</button>
+                            </div>
+                        </form>
+
+
+
+                    </div>
+                </div>
+
+                <div class="btn-group relative">
+                    <button class="btn dropdown_btn dropdown2 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Skills
+                    </button>
+                    <div class="dropdown_skills drop_down">
+                        <h3>Skills</h3>
+
+
+                        <form id="skillForm" >
+                            <div *ngFor="let skill of skills">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" (change)="skillFilter($event)" name="skills" value={{skill}}
+                                        id="flex_{{skill}}">
+                                    <label class="form-check-label" for="flex_{{skill}}">
+                                        {{skill}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="text-center drop_down_bottom">
+                                <a>Cancel</a>
+                                <button (click)="submitSkill()" type="submit" class="apply_btn">Apply</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn dropdown_btn dropdown3 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Jobs type
+                    </button>
+
+
+                    <div class="dropdown_job_type drop_down">
+                        <h3>Jobs type</h3>
+                        <form >
+                            <div class="form-check mb-3">
+                                <input (change)="jobfilter($event)" class="form-check-input" type="checkbox" value="IT" name="job_type" id="it_jobs">
+                                <label class="form-check-label" for="it_jobs">
+                                    IT Jobs
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input (change)="jobfilter($event)" class="form-check-input" type="checkbox" value="Finance Jobs" name="job_type"
+                                    id="finance_jobs">
+                                <label class="form-check-label" for="finance_jobs">
+                                    Finance Jobs
+                                </label>
+                            </div>
+
+                            <div class="text-center drop_down_bottom">
+                                <a class="cancel-button">Cancel</a>
+                                <button type="submit" (click)="submitJobFilter()" class="apply_btn">Apply</button>
+                            </div> 
+                        </form>
+                    </div>
+
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn dropdown_btn dropdown4 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Tags
+                    </button>
+                    <div class="dropdown_menu4 drop_down">
+                        <h3>Tags</h3>
+                        <form action="/admin/filters" method="post">
+                            <div class="form-check mb-3">
+                                <input  (change)="tagFilter($event)" class="form-check-input" type="checkbox" name="tags" value="Follow up"
+                                    id="followup" id="followup">
+                                <label class="form-check-label" for="followup">
+                                    Follow Up
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" (change)="tagFilter($event)"  type="checkbox" name="tags" value="not interested"
+                                    id="notinterested">
+                                <label class="form-check-label" for="notinterested">
+                                    Not Interested
+                                </label>
+                            </div>
+                            <div class="text-center drop_down_bottom">
+                                <a>Cancel</a>
+                                <button type="submit" (click)="submitTags()" class="apply_btn">Apply</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mt-4">
+                <div class="row ">
+                    <!-- Reports -->
+                    <div class="col-12" style="max-height: 80vh; overflow-y: auto;">
+                        <!-- show loader  -->
+                        <div *ngIf="loading" class=""
+                            style="display: flex; justify-content: center; margin-top : 70%; overflow: hidden;">
+                            <app-loader></app-loader>
+                        </div>
+                        <!-- jobs data  -->
+                        <div *ngFor="let job of jobbsdata">
+                            <div *ngIf="!loading && !job.isNotInterested" class="card job_listing" [attr.data-jobid]="job._id"
+                                (click)="jodDetails(job._id)">
+                                <h4>{{ job.job_title }}</h4>
+                                <h5>{{ job.source_name }}</h5>
+                                <h6>
+                                    {{ job.company.company_name }}
+                                </h6>
+                                <div class="job_location"><i class="bx bxs-map"></i>
+                                    {{ job.location }}
+                                </div>
+                                <p>
+                                    {{ job.tags }}
+                                </p>
+                                <div class="posted_date">
+                                    Posted Date:
+                                    {{ job.date_of_post }}
+                                </div>
+                                <ul class="bottom_btn">
+                                    <ng-container *ngIf="job.admin_action">
+                                        <ng-container *ngIf="job.admin_action.follow_up">
+                                          <li style="margin-right: 6px;">
+                                            <button type="button" class="follow">Follow Up</button>
+                                          </li>
+                                        </ng-container>
+                                      </ng-container>
+                                    <ng-container *ngIf="job.remarks">
+                                        <li>
+                                            <button type="button" class="remarks">Remarks</button>
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </div>
+                    </div><!-- End Reports -->
+                </div>
+            </div><!-- End Left side columns -->
+
+            <!-- Right side columns -->
+
+
+            <div class="col-lg-8 mt-4" style="max-height: 80vh; overflow-y: auto;">
+                <div class="card top-selling overflow-auto" [ngStyle]="{'height': companyName ? 'auto' : '153px'}">
+                    <h5 class="card-title bb title_peding" id="jobHeading">
+                    {{Jobtitle}}
+                    </h5>
+                    <form method="post" id="companyForm" *ngIf="companyName" #companyForm="ngForm">
+                        <input type="hidden" [(ngModel)]="companyId" name="companyId" />
+                        <div class="table_btn_top">
+                            <button class="btn dropdown_btn" type="button" (click)="toogleEdit()">     
+                                {{isEditing ? 'save' : 'Edit'}}
+                            </button>
+                            <button class="btn dropdown_btn" type="button" data-bs-toggle="modal"
+                                data-bs-target="#remarks_popup">
+                                Remarks
+                            </button>
+                            <button class="btn dropdown_btn dropdown5 dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Action
+                            </button>
+                            <div class="dropdown_menu5 drop_down">
+                                <div class="form-check mb-3">
+                                  <input  checked="true" class="form-check-input" type="checkbox" [(ngModel)]="followUp" name="followUp" id="flexCheckDefault">
+                                  <label class="form-check-label" for="flexCheckDefault">
+                                    Follow Up             
+                                  </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                  <input class="form-check-input" type="checkbox" [(ngModel)]="notInstrested" name="notInterested" id="flexCheckDefault1">
+                                  <label class="form-check-label" for="flexCheckDefault1">
+                                    Not Interested
+                                  </label>
+                                </div>
+                                <button type="button" class="apply_btn" (click)="actionFilter()">Submit</button>
+                              </div>
+                        </div>
+
+                        <div class="card-body pb-0 mt-2">
+                            <table class="table job_listing_table" [class.input_back_none]="!isEditing">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2"><i class="bx bxs-map"></i> {{clocation}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Company Name</td>
+                                        <td class="tr"><input type="text" [(ngModel)]="companyName" name="companyName"
+                                                [class.input_disable]="!isEditing" value={{companyName}}>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Company Email</td>
+                                        <td class="tr">
+                                            <input type="text" class="require" [(ngModel)]="companyEmail"
+                                                name="companyEmail" value={{companyEmail}} placeholder="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <!-- need to be set because we got array from the backend  -->
+                                        <td>Company contact No</td>
+                                        <td class="tr"><input type="text" [class.input_disable]="!isEditing"
+                                                name="companyContact" [(ngModel)]="companyContact"
+                                                value={{companyContact}} placeholder=""></td>
+                                    </tr>
+                                    <tr *ngIf="salary">
+                                        <td>Salary Range</td>
+                                        <td class="tr"><input type="text" [(ngModel)]="salary" name="salary"
+                                                [class.input_disable]="!isEditing" value={{salary}}></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Website URL</td>
+                                        <td class="tr Website"><input type="text" [(ngModel)]="websiteUrl"
+                                                name="websiteUrl" [class.input_disable]="!isEditing"
+                                                value={{websiteUrl}}></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Company Type</td>
+                                        <td class="tr"><input type="text" [(ngModel)]="companyType" name="companyType"
+                                                [class.input_disable]="!isEditing" placeholder="" value={{companyType}}>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Number of Employees</td>
+                                        <td class="tr"><input type="text" [(ngModel)]="employees" name="employees"
+                                                [class.input_disable]="!isEditing" placeholder="" value={{employees}}>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Date of Post</td>
+                                        <td class="tr"><input type="text" [(ngModel)]="dateOfPost" name="dateOfPost"
+                                                class="input_disable" placeholder="" value={{dateOfPost}}>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="job_listing_detail" id="outputContent">
+                                <div class="job_listing_detail" [innerHTML]="jobDescription"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- End Right side columns -->
+        </div>
+    </section>
+    <!-- pagination -->
+    <div id="filteredLocations"></div>
+    <!-- This div will display the filtered locations -->
+
+    <app-pagination [currentPage]="currentPage" [totalPages]="totalPages"
+        (pageChanged)="onPageChange($event)"></app-pagination>
+
+
+    <!--   
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+
+
+
+
+
+
+
+
+
+            <li class="page-item">
+                <a class="page-link" href="
+                     
+                        /admin/job_listing
+                        
+
+                        
+
+                        
+                     
+"> 1</a>
+            </li>
+
+
+
+
+
+
+
+
+
+
+
+            <li class="page-item">
+                <a class="page-link" href="
+                     
+                            /admin/job_listing?page=2
+                        
+
+                        
+
+                        
+
+                            
+" aria-label="Next">
+                    <span aria-hidden="true">2 </span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="
+
+                        
+                            /admin/job_listing?page=2
+                        
+
+                        
+
+                        
+
+                        
+
+
+                        " aria-label="Next">
+                    <span aria-hidden="true">»</span>
+                </a>
+            </li>
+
+
+        </ul>
+    </nav> -->
+
+
+
+</main>
+<!-- End #main -->
+
+<div class="modal fade" id="remarks_popup" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Remarks</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-4">
+                    <form>
+                        <label for="Enter_your_Remarks" class="form-label">Enter your Remarks</label>
+                            <textarea class="form-control" id="Enter_your_Remarks" style="height: 200px" name="remark" [(ngModel)]="remarksbyuser"
+                            required></textarea>
+                        <input type="hidden" name="job_id" id="job_id">
+                        <button type="submit" class="btn dropdown_btn mt-3" (click)="submitRemark()" title="Submit">Submit</button>
+                    </form>
+                </div>
+                <div *ngFor="let remark of remarks">
+                    <div class="comment_box" id="rid">
+                        <div class="comment_top_section"><span class="pic"><span><i
+                                        class="bx bx-user"></i></span></span><span class="name">
+                                            {{remark.review_by}}
+                                        </span><span
+                                class="time">{{remark.date_of_remark}}
+                            </span>
+                            </div>
+                        <p>
+                            {{remark.remark}}
+                        </p>
+                    </div>
+                </div>
+              
+                
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var jobId; // Declare jobId outside the click event handler
+        $('#editCompany').click(function () {
+            $('#editCompany').hide();
+
+            // Show the edit form and the save button
+            $('#saveButton').show();
+
+            var element = document.getElementById("tabelHeader");
+
+            // Remove the CSS class from the element
+            element.classList.remove("input_back_none");
+
+            var inputElements = document.getElementsByTagName("input");
+
+            // Convert the HTMLCollection to an array to iterate over it
+            var inputArray = Array.from(inputElements);
+
+            // Remove each input element
+            inputArray.forEach(function (inputElement) {
+                inputElement.classList.remove("input_disable");
+            });
+        });
+
+
+        $('.job_listing').on('click', function () {
+            jobId = $(this).data('jobid');
+            $('#job_id').val(jobId)
+            $('#jid').val(jobId)
+
+            var element = document.getElementById("tabelHeader");
+            element.classList.add("input_back_none");
+
+            $('#jobRemarks').val(jobId)
+            $('#jobAction').val(jobId);
+
+            $('#editCompany').show();
+            $('#saveButton').hide();
+
+            $('#jobRemarks').show();
+            $('#jobAction').show();
+
+            // Use AJAX to fetch job description from the server
+            $.ajax({
+                url: '/admin/get_job_details/' + jobId,
+                type: 'GET',
+                success: function (data) {
+                    // Create a list of items to display in the card
+                    var itemList = [];
+
+                    // Check if each detail is available and add it to the list
+                    itemList.push('<tr> <td colspan = "2"> <i class="bx bxs-map"></i>' + (data.location ? data.location : '') + '</td></tr>');
+                    itemList.push('<tr><td>Company Name</td><td class="tr"><input type="text" id="companyName" class="input_disable" name="companyName" value ="' + (data.companyName ? data.companyName : '') + '"></td> </tr>');
+                    itemList.push('<tr><td>Company Email</td><td class="tr"><input type="email" id="companyEmail" class="input_disable require" name="companyEmail" placeholder="Please enter company name" value="' + (data.companyEmail ? data.companyEmail : '') + '"></td></tr>');
+                    itemList.push('<tr><td>Company Contact No</td><td class="tr"><input type="text" class="input_disable"  pattern="[0-9]{10}" title="Please enter a 10-digit phone number" id="companyContact" name="companyContact" value="' + (data.companyContact ? data.companyContact : '') + '"></td></tr>');
+
+                    if (data.salary) {
+                        itemList.push('<tr><td>Salary Range</td> <td class="tr">' + (data.salary ? data.salary : '') + '"></td></tr>');
+                    }
+
+                    itemList.push('<tr><td>Website URL</td><td class="tr Website"> <input class="input_disable" type="url" name="websiteUrl" id="websiteUrl" value="' + (data.websiteUrl ? data.websiteUrl : '') + '"></td></tr>');
+                    itemList.push('<tr><td>Company Type</td> <td class="tr"><input class="input_disable" type="text" name="companyType" id="companyType" value="' + (data.companyType ? data.companyType : '') + '"></td></tr>');
+                    itemList.push('<tr> <td>Number of Employees</td> <td class="tr"><input class="input_disable" type="text" name="numEmployees" id="numEmployees" value = "' + (data.numEmployees ? data.numEmployees : '') + '"></td></tr>');
+
+                    if (data.dateOfPost) {
+                        itemList.push('<tr> <td>Date of Post</td> <td class="tr"> ' + (data.dateOfPost ? data.dateOfPost : '') + '</td></tr>');
+                    }
+
+                    // Construct the HTML for the card
+                    var cardHtml = ''
+
+                    // Iterate through the items and add them to the list
+                    itemList.forEach(function (item) {
+                        cardHtml += '<tr>' + item + '</tr>';
+                    });
+
+                    // Close the HTML for the card
+                    cardHtml += '';
+
+                    // Update the output content on success
+                    $('#outputHeader').html(cardHtml);
+
+                    $('#companyId').val(data.companyId)
+
+                    // Update job title
+                    $('#jobHeading').html(data.JobTitle)
+
+                    // Update the output content on success
+                    $('#outputContent').html(data.jobDescription);
+
+                },
+                error: function () {
+                    alert('Failed to fetch job description.');
+                }
+            });
+
+        });
+
+        $('#jobAction').on('click', function () {
+            jobId = this.value
+
+            console.log(jobId + " job");
+            // Uncheck all checkboxes first
+            $('#follow_up').prop('checked', false);
+            $('#not_interested').prop('checked', false);
+            // Use AJAX to fetch job description from the server
+            $.ajax({
+                url: '/admin/get_action/' + jobId,
+                type: 'GET',
+                success: function (data) {
+                    if (data && data.length > 0 && data[0].admin_action) {
+                        var adminAction = data[0].admin_action;
+
+                        if (adminAction.follow_up) {
+                            document.getElementById('follow_up').checked = true;
+                        }
+
+                        if (adminAction.not_interested) {
+                            document.getElementById('not_interested').checked = true;
+                        }
+                    }
+
+                },
+                error: function () {
+                    alert('Failed to fetch Action button details.');
+                }
+            });
+        });
+
+
+        $('#jobRemarks').on('click', function () {
+            jobId = this.value
+            console.log(jobId + " job");
+
+            // Use AJAX to fetch job description from the server
+            $.ajax({
+                url: '/admin/get_remarks/' + jobId,
+                type: 'GET',
+                success: function (data) {
+                    // Construct the HTML for the remarks
+                    var cardHtml = '';
+
+                    // Iterate through each remark object in the data array
+                    data.forEach(function (remark) {
+                        cardHtml += '<div class="comment_top_section">' +
+                            '<span class="pic"><span><i class="bx bx-user"></i></span></span>' +
+                            '<span class="name">' + remark.review_by + '</span>' +
+                            '<span class="time">' + remark.date_of_remark + '</span>' +
+                            '</div>' +
+                            '<p>' + remark.remark + '</p>';
+                    });
+
+                    // Display the remark HTML in the specified element
+                    $('#rid').html(cardHtml);
+                },
+                error: function () {
+                    alert('Failed to fetch remarks details.');
+                }
+            });
+        });
+    });
+</script>
+<script>
+    function applyFilterLocation() {
+        event.preventDefault(); // Prevent default form submission
+        var selectedLocations = [];
+        var checkboxes = document.querySelectorAll('input[name="locations"]:checked');
+        checkboxes.forEach(function (checkbox) {
+            selectedLocations.push(checkbox.value);
+        });
+
+        // Send selected locations to backend
+        fetch('/admin/filter_locations', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ locations: selectedLocations })
+        })
+            .then(response => response.json()) // Parse response as JSON
+            .then(data => {
+                // Display filtered locations
+                var filteredLocationsDiv = document.getElementById('filteredLocations');
+                filteredLocationsDiv.innerHTML = "<h3>Filtered Locations</h3>";
+                if (data.length > 0) {
+                    data.forEach(function (location) {
+                        filteredLocationsDiv.innerHTML += "<p>" + location + "</p>";
+                    });
+                } else {
+                    filteredLocationsDiv.innerHTML += "<p>No locations found</p>";
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.card.job_listing').click(function () {
+            $('.job_listing').removeClass("active_job");
+            $(this).addClass("active_job");
+        });
+    });
+</script>
+
+<script>
+    function addUser() {
+
+        //  var interested = document.getElementById('interestedCheckbox').checked;
+        var followUp = document.getElementById('follow_up').checked;
+        var notInterested = document.getElementById('not_interested').checked;
+        var jid = document.getElementById('jid').value;
+
+        var userData = {
+            //    interested: interested,
+            jid: jid,
+            follow_up: followUp,
+            not_interested: notInterested
+        };
+
+        // Send AJAX request
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/admin/add_action', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                console.log(xhr.responseText);
+                $(".dropdown_menu5").slideToggle("");
+            }
+        };
+        xhr.send(JSON.stringify(userData));
+    }
+</script>
+
+
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

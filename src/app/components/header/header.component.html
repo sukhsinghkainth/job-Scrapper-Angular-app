@@ -1,0 +1,94 @@
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <a routerLink="" style="text-decoration: none;" class="logo d-flex align-items-center">
+            <span class="d-none d-lg-block">Admin</span>
+        </a>
+        <!-- src/app/components/header/header.component.html -->
+        <i class="bi bi-list toggle-sidebar-btn" (click)="toggleSidebar()"></i>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-between">
+        <h1 class="page_title">Dashboard</h1>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+
+            <li class="nav-item d-block ">
+                <div class="search-bar">
+                    <form class="search-form d-flex align-items-center">
+                        <input type="text" name="query"
+                            placeholder="Search for job title, company name, location, salary, date of post and work type"
+                            title="Search for job title, company name, location, salary, date of post and work type">
+                        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+                    </form>
+                </div><!-- End Search Bar -->
+            </li><!-- End Search Icon-->
+
+            <li class="nav-item d-block d-lg-none">
+                <a class="nav-link nav-icon search-bar-toggle " >
+                    <i class="bi bi-search"></i>
+                </a>
+            </li><!-- End Search Icon-->
+
+
+            <li class="nav-item dropdown pe-3">
+
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" data-bs-toggle="dropdown">
+                    <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                    <span id="admin" class="d-none d-md-block dropdown-toggle ps-2">admin</span>
+                </a><!-- End Profile Iamge Icon -->
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" >
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Sign Out</span>
+                        </a>
+                    </li>
+
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+
+        </ul>
+    </nav><!-- End Icons Navigation -->
+
+</header>
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active_menu" [routerLinkActiveOptions]="{exact: true}">
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link " routerLink="admin/job_listing" routerLinkActive="active_menu"
+                [routerLinkActiveOptions]="{exact: true}">
+                <i class="bi bi-journal-text"></i>
+                <span>Job listing</span>
+            </a>
+        </li><!-- End Profile Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link " routerLink="admin/company/companies_list" routerLinkActive="active_menu"
+                [routerLinkActiveOptions]="{exact: true}">
+                <i class="bi bi-bar-chart"></i>
+                <span>Company's Detail</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " routerLink="admin/log_files" routerLinkActive="active_menu"
+                [routerLinkActiveOptions]="{exact: true}">
+                <i class="bi bi-envelope"></i>
+                <span>Logs</span>
+            </a>
+        </li>
+    </ul>
+</aside><!-- End Sidebar-->

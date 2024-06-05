@@ -1,0 +1,276 @@
+#w {
+    margin: 0;
+    padding: 0;
+    font-family: 'Albert Sans', sans-serif !important;
+}
+
+input[type="checkbox" i] {
+    background-color: initial;
+    cursor: default;
+    appearance: auto;
+    box-sizing: border-box;
+    margin: 3px 3px 3px 4px;
+    padding: initial;
+    border: initial;
+}
+
+input[type="email" i] {
+    padding-block: 1px;
+    padding-inline: 2px;
+}
+
+#pass{
+    top: -4px;
+}
+.login_area {
+    height: 100vh;
+    background-image: url(../../../assets/img/login_bg.jpg)
+}
+
+.login_block .form label img {
+    position: relative;
+    top: -1.2px;
+}
+
+
+.login_block h1 {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 400;
+    color: #00293D;
+    font-family: 'Albert Sans', sans-serif !important;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.login_block {
+    width: 660px;
+    background: #fff;
+    float: right;
+    margin-right: 100px;
+    padding: 50px 0;
+    box-shadow: 0px 0px 20px #00000045;
+    border-radius: 25px;
+    margin-top: 90px;
+}
+
+.logo_area {
+    position: absolute;
+    left: 15%;
+    z-index: 1;
+    top: 100px;
+}
+
+.logo_area img:first-child {
+    margin-right: 50px;
+}
+
+.login_block .form {
+    padding: 0 70px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    position: relative;
+    margin-top: 60px;
+}
+
+.login_block .form input[type=text],
+.form input[type=email],
+input[type=password] {
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid #747474;
+    padding: 10px 0;
+}
+
+
+
+.login_block .form input:focus {
+    outline: none;
+}
+
+.mb-3 {
+    margin-bottom: 40px !important;
+}
+
+.login_block .form label {
+    color: #00293D;
+    font-weight: 500;
+}
+
+.mt-3 {
+    margin-top: 30px;
+}
+/* .login_block.form input[type="text"]:focus, */
+input[type="password"]:focus {
+    outline: 2px solid black !important;
+    border-radius: 5px ;
+}
+input[type="text"]:focus {
+    outline: 2px solid black !important;
+    border-radius: 5px ;
+}
+
+
+.mt-5 {
+    margin-top: 50px !important;
+}
+
+.mb-2 {
+    margin-bottom: 20px !important;
+}
+
+.forget_pass {
+    float: right;
+    color: #009DE2;
+    font-weight: 600;
+}
+
+.login_btn {
+    background: #009DE2 0% 0% no-repeat padding-box;
+    box-shadow: 0px 4px 0px #0075A8;
+    border-radius: 6px;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.text-center {
+    text-align: center;
+}
+
+button {
+    width: 100%;
+}
+
+.sm_btn {
+    font-size: 16px;
+    color: #4A6FA5;
+    padding: 15px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    background: #fff;
+    border: 0;
+}
+
+.sm_btn img {
+    position: relative;
+    top: 3px;
+    margin-right: 6px;
+}
+
+.big_img {
+    position: absolute;
+    left: -930px;
+}
+
+@media (max-width: 1780px) {
+    .logo_area {
+        left: 10%;
+    }
+}
+
+@media (max-width: 1685px) {
+    .logo_area {
+        left: 150px;
+    }
+    .big_img {
+        position: absolute;
+        left: -670px;
+        width: 695px;
+        top: 111px;
+    }
+    .logo_area img {
+        width: 243px;
+    }
+}
+
+@media (max-width: 1500px) {
+    .logo_area {
+        left: 60px;
+    }
+    .logo_area img {
+        width: 200px;
+    }
+}
+
+@media (max-width: 1366px) {
+    .big_img {
+        display: none;
+    }
+    .login_block {
+        float: none;
+        margin-right: 0;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        position: relative;
+        border-radius: 0;
+        margin-top: 0;
+        padding: 50px 0 0;
+    }
+    .logo_area img:last-child {
+        /* float: right; */
+        width: 120px;
+        position: relative;
+        left : 300px;
+        bottom: 40px;
+    }
+    .logo_area {
+        left: 0;
+        top: 21px;
+        width: 90%;
+        padding: 5%;
+    }
+    .login_block .form {
+        /* margin-top: 100px; */
+    }
+}
+
+@media (max-width: 767px) {
+    .login_block {
+        width: 90%;
+    }
+    .logo_area img:first-child {
+        margin-right: 0;
+    }
+    .login_block h1 {
+        margin: 0;
+        font-size: 27px;
+        color: #00293D;
+        text-align: center;
+    }
+    .login_block .form {
+        padding: 0 35px;
+    }
+}
+
+.alert {
+    position: relative;
+    background-color: rgba(255, 0, 0, .4);
+    margin-top: 18px;
+    font-size: 13px;
+    padding: 11px 5px;
+}
+
+.closebtn {
+    position: absolute;
+    right: -10px;
+    top: -8px;
+    background: red;
+    padding: 5px;
+    border-radius: 100%;
+    height: 15px;
+    width: 15px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+}

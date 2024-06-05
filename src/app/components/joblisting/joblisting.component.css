@@ -1,0 +1,29 @@
+  
+  .slide-down {
+    display: block;
+    animation: slideDown 0.3s ease;
+  }
+  
+  .slide-up {
+    display: block;
+    animation: slideUp 0.3s ease;
+  }
+  
+  @keyframes slideDown {
+    from {
+      max-height: 0;
+    }
+    to {
+      max-height: 500px; /* Adjust height as needed */
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      max-height: 500px; /* Adjust height as needed */
+    }
+    to {
+      max-height: 0;
+    }
+  }
+  
