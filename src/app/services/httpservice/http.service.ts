@@ -6,7 +6,6 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class HttpService {
- 
   // private readonly ApiUrl = 'http://localhost:3000/api/v1'
   private readonly ApiUrl = environment.apiUrl;
   constructor(private http: HttpClient) { }

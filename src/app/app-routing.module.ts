@@ -5,14 +5,14 @@ import { JoblistingComponent } from './components/joblisting/joblisting.componen
 import { CompinesListComponent } from './components/compines-list/compines-list.component';
 import { LogComponent } from './components/log/log.component';
 import { LoginComponent } from './components/login/login.component';
+import { authGuard } from './authGuard/authGuard';
 
 const routes: Routes = [
-  { path: "", component: MainComponent },
-  { path: 'admin/job_listing', component: JoblistingComponent },
-  { path: "admin/company/companies_list", component: CompinesListComponent },
-  { path: "admin/log_files", component: LogComponent },
+  { path: "", component: MainComponent, canActivate: [authGuard] ,pathMatch: 'full'},
+  { path: 'admin/job_listing', component: JoblistingComponent, canActivate: [authGuard] },
+  { path: "admin/company/companies_list", component: CompinesListComponent, canActivate: [authGuard] },
+  { path: "admin/log_files", component: LogComponent, canActivate: [authGuard] },
   { path: "login", component: LoginComponent },
-
 ];
 
 @NgModule({

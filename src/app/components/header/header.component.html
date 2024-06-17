@@ -17,8 +17,8 @@
 
             <li class="nav-item d-block ">
                 <div class="search-bar">
-                    <form class="search-form d-flex align-items-center">
-                        <input type="text" name="query"
+                    <form class="search-form d-flex align-items-center" (submit)="goto(serach)">
+                        <input type="text" name="query" [(ngModel)]="serach" 
                             placeholder="Search for job title, company name, location, salary, date of post and work type"
                             title="Search for job title, company name, location, salary, date of post and work type">
                         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
@@ -42,7 +42,7 @@
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" >
+                        <a class="dropdown-item d-flex align-items-center" (click)="logout()">
                             <i class="bi bi-box-arrow-right"></i>
                             <span>Sign Out</span>
                         </a>
@@ -70,7 +70,7 @@
 
         <li class="nav-item">
             <a class="nav-link " routerLink="admin/job_listing" routerLinkActive="active_menu"
-                [routerLinkActiveOptions]="{exact: true}">
+                [routerLinkActiveOptions]="{exact: false}">
                 <i class="bi bi-journal-text"></i>
                 <span>Job listing</span>
             </a>
@@ -78,14 +78,14 @@
 
         <li class="nav-item">
             <a class="nav-link " routerLink="admin/company/companies_list" routerLinkActive="active_menu"
-                [routerLinkActiveOptions]="{exact: true}">
+                [routerLinkActiveOptions]="{exact: false}">
                 <i class="bi bi-bar-chart"></i>
                 <span>Company's Detail</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link " routerLink="admin/log_files" routerLinkActive="active_menu"
-                [routerLinkActiveOptions]="{exact: true}">
+                [routerLinkActiveOptions]="{exact: false}">
                 <i class="bi bi-envelope"></i>
                 <span>Logs</span>
             </a>

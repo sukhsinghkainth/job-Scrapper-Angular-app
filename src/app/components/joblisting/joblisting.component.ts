@@ -1,5 +1,8 @@
 import { AfterViewChecked, Component, OnInit, isDevMode } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery'
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { IFollowJobs, IJob } from 'src/app/interface/interfaces';
 import { JoblistService } from 'src/app/services/joblisting/joblist.service';
 @Component({
   selector: 'app-joblisting',
@@ -8,10 +11,13 @@ import { JoblistService } from 'src/app/services/joblisting/joblist.service';
 })
 export class JoblistingComponent implements AfterViewChecked, OnInit {
 
-  constructor(private joblistService: JoblistService) { }
+  constructor(private joblistService: JoblistService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   skills!: string[]
-  jobbsdata!: any[]
+  jobbsdata!: IJob[]
   location!: string[]
   totalJobs!: number
   isEditing = false;
@@ -28,20 +34,22 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
   loading: boolean = false
   currentPage: number = 1;
   totalPages!: number;
-  jobDescription: any;
+  jobDescription!: string;
   companyContact!: any;
   companyId!: string
   followUp!: boolean
   notInstrested!: boolean;
-  jobId!: any;
+  jobId!: string;
   remarks!: any;
-  remarksbyuser!: any;
+  remarksbyuser!: string;
   selectedLocations: string[] = [];
   selectedSkills: string[] = [];
   selectedJobs: string[] = [];
   selectedTags: string[] = [];
 
-  submitted: boolean = false;
+  searchTerm: string = '';
+
+  submitted!: string;
   toogleEdit() {
     this.isEditing = !this.isEditing;
     const data = {
@@ -50,7 +58,7 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
       companyName: this.companyName,
       companyEmail: this.companyEmail,
       websiteUrl: this.websiteUrl,
-      employees: this.employees,
+      numEmployees: this.employees,
       companyType: this.companyType,
     };
     if (!this.isEditing) {
@@ -60,8 +68,7 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
           updatedJob.company.company_name = this.companyName;
           updatedJob.company.company_contact = this.companyContact;
           updatedJob.company.company_email = this.companyEmail;
-          updatedJob.websiteUrl = this.websiteUrl;
-          updatedJob.company.employees = this.employees;
+          updatedJob.company.company_website = this.websiteUrl;
           updatedJob.company.company_type = this.companyType;
         }
       })
@@ -69,10 +76,10 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
   }
 
   actionFilter() {
-    let data = {
+    let data: IFollowJobs = {
       jid: this.jobId,
       follow_up: this.followUp,
-      not_interested: this.notInstrested,
+      not_intrested: this.notInstrested
     }
     this.joblistService.jobFollow(data).subscribe((res) => {
       const updatedJob = this.jobbsdata.find(job => job._id === this.jobId);
@@ -81,7 +88,7 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
           follow_up: this.followUp,
           not_interested: this.notInstrested
         };
-        updatedJob.isNotInterested = this.notInstrested;
+        updatedJob.admin_action.not_interested = this.notInstrested;
       }
     })
   }
@@ -116,13 +123,15 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
 
   submitFilter(filterType: string, resetCheckboxes: string[]) {
     this.currentPage = 1;
-    this.submitted = true;
+    this.submitted = filterType;
     this.DropDownfilters(filterType);
     resetCheckboxes.forEach(checkbox => this.resetCheckboxes(checkbox));
+    // Clear query parameters
+    this.router.navigate(['admin/job_listing'])
   }
 
   submitJobFilter() {
-    this.submitFilter('jobs', ['skills', 'locations', 'tags']);
+    this.submitFilter('jobs', ['skills', 'locations', 'tags'],);
   }
 
   submitLoc() {
@@ -144,32 +153,46 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
       checkbox.checked = false;
     });
   }
-
+  createQuery(selectedFilter: string[], query: string): string {
+    let queryString = selectedFilter.map(loc => `${query}=${encodeURIComponent(loc).replace(/%20/g, '+')}`)
+      .join('&');
+    return queryString;
+  }
+  emptyArrays(...arrays: string[][]): void {
+    arrays.forEach(array => array.length = 0);
+  }
   DropDownfilters(filter: string) {
     let queryString = ''
-    let queryFilter = ''
+    let queryFilter = "filters"
     if (filter === 'skill') {
-      this.selectedLocations = []; this.selectedJobs = []
-      queryString = this.selectedSkills.map(loc => `skills=${encodeURIComponent(loc).replace(/%20/g, '+')}`)
-        .join('&');
-      queryFilter = "filters"
+      // this.selectedLocations = []; this.selectedJobs = []; this.selectedTags = [];
+      this.emptyArrays(this.selectedLocations, this.selectedJobs, this.selectedTags);
+      // queryString = this.selectedSkills.map(loc => `skills=${encodeURIComponent(loc).replace(/%20/g, '+')}`)
+      //   .join('&');
+      queryString = this.createQuery(this.selectedSkills, "skills")
     }
     else if (filter === 'location') {
-      this.selectedSkills = []; this.selectedJobs = []
-      queryString = this.selectedLocations.map(loc => `location=${encodeURIComponent(loc).replace(/%20/g, '+')}`)
-        .join('&');
-      queryFilter = "filters"
+      // this.selectedSkills = []; this.selectedJobs = []; this.selectedTags = [];
+      this.emptyArrays(this.selectedSkills, this.selectedJobs, this.selectedTags);
+      // queryString = this.selectedLocations.map(loc => `location=${encodeURIComponent(loc).replace(/%20/g, '+')}`)
+      //   .join('&');
+      queryString = this.createQuery(this.selectedLocations, 'location')
     }
     else if (filter === 'jobs') {
-      queryString = this.selectedJobs.map(loc => `job_type=${encodeURIComponent(loc).replace(/%20/g, '+')}`)
-        .join('&');
+      // this.selectedSkills = []; this.selectedLocations = []; this.selectedTags = [];
+      this.emptyArrays(this.selectedSkills, this.selectedLocations, this.selectedTags);
+      // queryString = this.selectedJobs.map(loc => `job_type=${encodeURIComponent(loc).replace(/%20/g, '+')}`)
+      //   .join('&');
+      queryString = this.createQuery(this.selectedJobs, "job_type")
       queryFilter = "job_type_filter"
     }
     else {
+      // this.selectedSkills = []; this.selectedLocations = []; this.selectedJobs = [];
+      this.emptyArrays(this.selectedSkills, this.selectedLocations, this.selectedJobs);
       // https://admin.fisca-quest.be/admin/filters?page=2&tags=Follow+up&tags=not+interested
-      queryString = this.selectedTags.map(loc => `tags=${encodeURIComponent(loc).replace(/%20/g, '+')}`)
-        .join('&');
-      queryFilter = "filters"
+      // queryString = this.selectedTags.map(loc => `tags=${encodeURIComponent(loc).replace(/%20/g, '+')}`)
+      //   .join('&');
+      queryString = this.createQuery(this.selectedTags, "tags")
       //  tags 
     }
     this.loading = true;
@@ -186,9 +209,43 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
   }
 
 
-
   ngOnInit(): void {
-    this.getjobdata(this.currentPage)
+    this.route.queryParams
+      .pipe(
+        debounceTime(900),
+      )
+      .subscribe(params => {
+        this.searchTerm = params['job_search'];
+        if (this.searchTerm) {
+          this.submitted = ''
+          this.currentPage = 1
+          this.searchJobs();
+        }
+        else {
+          if (!this.submitted) {
+            this.getjobdata(this.currentPage)
+          }
+        }
+      });
+  }
+  // page=2&job_search=you+can+say+what+ever
+  searchJobs() {
+    if (this.searchTerm) {
+      console.log(this.searchTerm)
+      // removig spaces 
+      let str = this.searchTerm.trim().replace(/\s+/g, ' ').split(' ').join('+');
+      this.loading = true;
+      let query = `page=${this.currentPage}&job_search=${str}`
+      this.joblistService.getSearch(query).subscribe(res => {
+        console.log(res.body)
+        this.totalJobs = res.body.total_jobs;
+        this.jobbsdata = res.body.jobs;
+        this.location = res.body.be_location;
+        this.skills = res.body.skills;
+        this.totalPages = Math.ceil(this.totalJobs / 10)
+        this.loading = false;
+      })
+    }
   }
 
   submitRemark() {
@@ -201,8 +258,11 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
     })
   }
 
+
+
   getRemarks() {
     this.joblistService.remarkData(this.jobId).subscribe((res) => {
+      console.log(res.body.remarks)
       this.remarks = res.body.remarks
     })
   }
@@ -225,19 +285,31 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
 
   onPageChange(newPage: number): void {
     this.currentPage = newPage;
+    let resetCheckboxes: Array<string>
     if (this.submitted) {
-      if (this.selectedLocations.length > 0) {
+      if (this.submitted === 'location') {
+        resetCheckboxes = ['skills', 'job_type', 'tags']
+        resetCheckboxes.forEach(checkbox => this.resetCheckboxes(checkbox));
         this.DropDownfilters('location')
       }
-      else if (this.selectedSkills.length > 0) {
+      else if (this.submitted === 'skill') {
+        resetCheckboxes = ['locations', 'job_type', 'tags']
+        resetCheckboxes.forEach(checkbox => this.resetCheckboxes(checkbox));
         this.DropDownfilters('skill')
       }
-      else if (this.selectedJobs.length > 0) {
+      else if (this.submitted === 'jobs') {
+        resetCheckboxes = ['locations', 'skills', 'tags']
+        resetCheckboxes.forEach(checkbox => this.resetCheckboxes(checkbox));
         this.DropDownfilters('jobs')
       }
-      else if (this.selectedTags.length > 0) {
+      else if (this.submitted === 'tags') {
+        resetCheckboxes = ['locations', 'skills', 'job_type']
+        resetCheckboxes.forEach(checkbox => this.resetCheckboxes(checkbox));
         this.DropDownfilters('tag')
       }
+    }
+    else if (this.searchTerm) {
+      this.searchJobs()
     }
     else {
       this.getjobdata(this.currentPage)
@@ -246,10 +318,10 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
 
   jodDetails(id: number) {
     this.isEditing = false;
-    this.jobId = id;
+    this.jobId = String(id);
     this.getRemarks();
     const updatedJob = this.jobbsdata.find(job => job._id === this.jobId);
-    if (updatedJob.admin_action) {
+    if (updatedJob?.admin_action) {
       this.followUp = updatedJob.admin_action.follow_up
       this.notInstrested = updatedJob.admin_action.not_interested
     }

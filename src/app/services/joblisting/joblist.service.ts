@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../httpservice/http.service';
+import { IFollowJobs, Iremarks } from 'src/app/interface/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +16,10 @@ export class JoblistService {
   jobUpdate(data:any){
       return this.http.post<any>(`admin/update_company_details`, data )
   }
-  jobFollow(data:any){
-    console.log(data)
-    return this.http.post<any>(`admin/add_action`, data )
+  jobFollow(data:IFollowJobs){
+    return this.http.post<IFollowJobs>(`admin/add_action`, data )
   }
-  remarkData(id:any){
+  remarkData(id:string){
     return this.http.get<any>(`admin/get_remarks/${id}`)
   }
   addRemarks(data:any){
@@ -27,5 +27,8 @@ export class JoblistService {
   }
   getFilters(data:any){
      return this.http.get<any>(`admin/${data}`)
+  }
+  getSearch(data:any){
+    return this.http.get<any>(`admin/search?${data}`)
   }
 }

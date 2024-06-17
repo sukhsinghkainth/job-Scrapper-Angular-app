@@ -9,15 +9,17 @@ import { CompinesListComponent } from './components/compines-list/compines-list.
 import { LogComponent } from './components/log/log.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LoginComponent } from './components/login/login.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LoaderComponent } from './components/loader/loader.component';
 import { FormsModule } from '@angular/forms';
+import { JobscardComponent } from './components/joblisting/jobscard/jobscard.component';
+import { CustomInterceptor } from './services/interceptor/httpinterceptor';
+
 @NgModule({
   declarations: [
-    
     AppComponent,
     HeaderComponent,
     MainComponent,
@@ -28,6 +30,7 @@ import { FormsModule } from '@angular/forms';
     LoginComponent,
     PaginationComponent,
     LoaderComponent,
+    JobscardComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,7 +40,9 @@ import { FormsModule } from '@angular/forms';
     NgxPaginationModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor , multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

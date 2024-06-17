@@ -1,0 +1,31 @@
+<div *ngIf="!loading && !job.isNotInterested" class="card job_listing" [attr.data-jobid]="job._id"  (click)="onjobclick(job._id)" >
+    <h4>{{ job.job_title }}</h4>
+    <h5>{{ job.source_name }}</h5>
+    <h6>
+        {{ job.company.company_name }}
+    </h6>
+    <div class="job_location"><i class="bx bxs-map"></i>
+        {{ job.location }}
+    </div>
+    <p>
+        {{ job.tags }}
+    </p>
+    <div class="posted_date">
+        Posted Date:
+        {{ job.date_of_post }}
+    </div>
+    <ul class="bottom_btn">
+        <ng-container *ngIf="job.admin_action">
+            <ng-container *ngIf="job.admin_action.follow_up">
+                <li style="margin-right: 6px;">
+                    <button type="button" class="follow">Follow Up</button>
+                </li>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="job.remarks">
+            <li>
+                <button type="button" class="remarks">Remarks</button>
+            </li>
+        </ng-container>
+    </ul>
+</div>

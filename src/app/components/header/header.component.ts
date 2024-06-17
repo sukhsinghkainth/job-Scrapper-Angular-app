@@ -1,4 +1,5 @@
-import { Component, Renderer2, ElementRef } from '@angular/core';
+import { Component, Renderer2, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -6,7 +7,12 @@ import { Component, Renderer2, ElementRef } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  constructor(private renderer: Renderer2, private el: ElementRef) { }
+  constructor(private renderer: Renderer2, private el: ElementRef,
+    private router: Router
+  ) { }
+
+  serach = '';
+ 
   toggleSidebar() {
     const body = this.el.nativeElement.ownerDocument.body;
     if (body.classList.contains('toggle-sidebar')) {
@@ -16,6 +22,15 @@ export class HeaderComponent {
     }
   }
 
-  
-
+  onSearchChange(term:string){
+     this.serach = term;
+  }
+ goto(userInput : string){
+  console.log(userInput)
+  this.router.navigate(['/admin/job_listing'], { queryParams: { job_search: userInput } });
+ }
+ logout(){
+  localStorage.removeItem('token')
+  this.router.navigateByUrl("/login")
+ }
 }

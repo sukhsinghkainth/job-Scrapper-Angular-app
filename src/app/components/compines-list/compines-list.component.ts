@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { CompaniesService } from 'src/app/services/companies/companies.service';
 
 @Component({
   selector: 'app-compines-list',
@@ -14,10 +14,12 @@ export class CompinesListComponent implements OnInit {
 
   onPageChange(newPage: number): void {
     this.currentPage = newPage;
-    // Call your API with the new page number
   }
 
-  ngOnInit(): void { }
-  constructor(private http: HttpClient) {
+
+  ngOnInit(): void { 
+    this.companyService.companiesData(this.currentPage).subscribe(res=>{console.log(res.body)})
+  }
+  constructor(private companyService : CompaniesService) {
   }
 }

@@ -12,10 +12,10 @@
                         <h3>Location</h3>
 
                         <form id="locationForm">
-                        <div *ngFor="let loc of location; ">
+                            <div *ngFor="let loc of location; ">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" (change)="locationFilter($event)"  type="checkbox" value={{loc}} name="locations"
-                                        id="flex_{{loc}}">
+                                    <input class="form-check-input" (change)="locationFilter($event)" type="checkbox"
+                                        value={{loc}} name="locations" id="flex_{{loc}}">
                                     <label class="form-check-label" for="flex_{{loc}}">
                                         {{loc}}
                                     </label>
@@ -23,7 +23,8 @@
                             </div>
                             <div class="text-center drop_down_bottom">
                                 <a id="locationCancel">Cancel</a>
-                                <button role="button" class="dropdown_btn apply_btn" (click)="submitLoc()" type="submit">Apply</button>
+                                <button role="button" class="dropdown_btn apply_btn" (click)="submitLoc()"
+                                    type="submit">Apply</button>
                             </div>
                         </form>
 
@@ -41,11 +42,11 @@
                         <h3>Skills</h3>
 
 
-                        <form id="skillForm" >
+                        <form id="skillForm">
                             <div *ngFor="let skill of skills">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" (change)="skillFilter($event)" name="skills" value={{skill}}
-                                        id="flex_{{skill}}">
+                                    <input class="form-check-input" type="checkbox" (change)="skillFilter($event)"
+                                        name="skills" value={{skill}} id="flex_{{skill}}">
                                     <label class="form-check-label" for="flex_{{skill}}">
                                         {{skill}}
                                     </label>
@@ -71,31 +72,28 @@
 
                     <div class="dropdown_job_type drop_down">
                         <h3>Jobs type</h3>
-                        <form >
+                        <form>
                             <div class="form-check mb-3">
-                                <input (change)="jobfilter($event)" class="form-check-input" type="checkbox" value="IT" name="job_type" id="it_jobs">
+                                <input (change)="jobfilter($event)" class="form-check-input" type="checkbox" value="IT"
+                                    name="job_type" id="it_jobs">
                                 <label class="form-check-label" for="it_jobs">
                                     IT Jobs
                                 </label>
                             </div>
-
                             <div class="form-check mb-3">
-                                <input (change)="jobfilter($event)" class="form-check-input" type="checkbox" value="Finance Jobs" name="job_type"
-                                    id="finance_jobs">
+                                <input (change)="jobfilter($event)" class="form-check-input" type="checkbox"
+                                    value="Finance Jobs" name="job_type" id="finance_jobs">
                                 <label class="form-check-label" for="finance_jobs">
                                     Finance Jobs
                                 </label>
                             </div>
-
                             <div class="text-center drop_down_bottom">
                                 <a class="cancel-button">Cancel</a>
                                 <button type="submit" (click)="submitJobFilter()" class="apply_btn">Apply</button>
-                            </div> 
+                            </div>
                         </form>
                     </div>
-
                 </div>
-
                 <div class="btn-group">
                     <button class="btn dropdown_btn dropdown4 dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
@@ -105,15 +103,15 @@
                         <h3>Tags</h3>
                         <form action="/admin/filters" method="post">
                             <div class="form-check mb-3">
-                                <input  (change)="tagFilter($event)" class="form-check-input" type="checkbox" name="tags" value="Follow up"
-                                    id="followup" id="followup">
+                                <input (change)="tagFilter($event)" class="form-check-input" type="checkbox" name="tags"
+                                    value="Follow up" id="followup" id="followup">
                                 <label class="form-check-label" for="followup">
                                     Follow Up
                                 </label>
                             </div>
                             <div class="form-check mb-3">
-                                <input class="form-check-input" (change)="tagFilter($event)"  type="checkbox" name="tags" value="not interested"
-                                    id="notinterested">
+                                <input class="form-check-input" (change)="tagFilter($event)" type="checkbox" name="tags"
+                                    value="not interested" id="notinterested">
                                 <label class="form-check-label" for="notinterested">
                                     Not Interested
                                 </label>
@@ -129,14 +127,24 @@
             <div class="col-lg-4 mt-4">
                 <div class="row ">
                     <!-- Reports -->
+
                     <div class="col-12" style="max-height: 80vh; overflow-y: auto;">
                         <!-- show loader  -->
                         <div *ngIf="loading" class=""
                             style="display: flex; justify-content: center; margin-top : 70%; overflow: hidden;">
                             <app-loader></app-loader>
+
                         </div>
+
                         <!-- jobs data  -->
-                        <div *ngFor="let job of jobbsdata">
+
+
+                        <app-jobscard *ngFor="let job of jobbsdata" [job]="job" [loading]="loading"
+                            (jobClick)="jodDetails($event)">
+                        </app-jobscard>
+
+                        
+                        <!-- <div *ngFor="let job of jobbsdata">
                             <div *ngIf="!loading && !job.isNotInterested" class="card job_listing" [attr.data-jobid]="job._id"
                                 (click)="jodDetails(job._id)">
                                 <h4>{{ job.job_title }}</h4>
@@ -169,7 +177,8 @@
                                     </ng-container>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
+
                     </div><!-- End Reports -->
                 </div>
             </div><!-- End Left side columns -->
@@ -180,12 +189,12 @@
             <div class="col-lg-8 mt-4" style="max-height: 80vh; overflow-y: auto;">
                 <div class="card top-selling overflow-auto" [ngStyle]="{'height': companyName ? 'auto' : '153px'}">
                     <h5 class="card-title bb title_peding" id="jobHeading">
-                    {{Jobtitle}}
+                        {{Jobtitle}}
                     </h5>
                     <form method="post" id="companyForm" *ngIf="companyName" #companyForm="ngForm">
                         <input type="hidden" [(ngModel)]="companyId" name="companyId" />
                         <div class="table_btn_top">
-                            <button class="btn dropdown_btn" type="button" (click)="toogleEdit()">     
+                            <button class="btn dropdown_btn" type="button" (click)="toogleEdit()">
                                 {{isEditing ? 'save' : 'Edit'}}
                             </button>
                             <button class="btn dropdown_btn" type="button" data-bs-toggle="modal"
@@ -198,19 +207,21 @@
                             </button>
                             <div class="dropdown_menu5 drop_down">
                                 <div class="form-check mb-3">
-                                  <input  checked="true" class="form-check-input" type="checkbox" [(ngModel)]="followUp" name="followUp" id="flexCheckDefault">
-                                  <label class="form-check-label" for="flexCheckDefault">
-                                    Follow Up             
-                                  </label>
+                                    <input checked="true" class="form-check-input" type="checkbox"
+                                        [(ngModel)]="followUp" name="followUp" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Follow Up
+                                    </label>
                                 </div>
                                 <div class="form-check mb-3">
-                                  <input class="form-check-input" type="checkbox" [(ngModel)]="notInstrested" name="notInterested" id="flexCheckDefault1">
-                                  <label class="form-check-label" for="flexCheckDefault1">
-                                    Not Interested
-                                  </label>
+                                    <input class="form-check-input" type="checkbox" [(ngModel)]="notInstrested"
+                                        name="notInterested" id="flexCheckDefault1">
+                                    <label class="form-check-label" for="flexCheckDefault1">
+                                        Not Interested
+                                    </label>
                                 </div>
                                 <button type="button" class="apply_btn" (click)="actionFilter()">Submit</button>
-                              </div>
+                            </div>
                         </div>
 
                         <div class="card-body pb-0 mt-2">
@@ -385,28 +396,28 @@
                 <div class="mb-4">
                     <form>
                         <label for="Enter_your_Remarks" class="form-label">Enter your Remarks</label>
-                            <textarea class="form-control" id="Enter_your_Remarks" style="height: 200px" name="remark" [(ngModel)]="remarksbyuser"
-                            required></textarea>
+                        <textarea class="form-control" id="Enter_your_Remarks" style="height: 200px" name="remark"
+                            [(ngModel)]="remarksbyuser" required></textarea>
                         <input type="hidden" name="job_id" id="job_id">
-                        <button type="submit" class="btn dropdown_btn mt-3" (click)="submitRemark()" title="Submit">Submit</button>
+                        <button type="submit" class="btn dropdown_btn mt-3" (click)="submitRemark()"
+                            title="Submit">Submit</button>
                     </form>
                 </div>
                 <div *ngFor="let remark of remarks">
                     <div class="comment_box" id="rid">
                         <div class="comment_top_section"><span class="pic"><span><i
                                         class="bx bx-user"></i></span></span><span class="name">
-                                            {{remark.review_by}}
-                                        </span><span
-                                class="time">{{remark.date_of_remark}}
+                                {{remark.review_by}}
+                            </span><span class="time">{{remark.date_of_remark}}
                             </span>
-                            </div>
+                        </div>
                         <p>
                             {{remark.remark}}
                         </p>
                     </div>
                 </div>
-              
-                
+
+
             </div>
         </div>
 
