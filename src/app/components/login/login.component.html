@@ -5,25 +5,26 @@
             <img src="../../../assets/img//seesharp_logo.png" alt="SeeSharp">
         </div>
         <div class="login_block">
-            <form   #myform="ngForm" [formGroup]="loginform" (ngSubmit)="onsubmit()" >
+            <form #myform="ngForm" [formGroup]="loginform" (ngSubmit)="onsubmit()">
                 <div class="form">
                     <img src="../../../assets/img//big_img.png" class="big_img">
                     <h1>Login to your Account</h1>
                     <div class="mb-3 mt-5">
                         <label><img src="../../../assets/img//email_icon.svg"> Email</label>
-                        <input type="text" name="email" formControlName="email" required="">
+                        <input type="text" name="email" formControlName="email" required autocomplete="email">
                     </div>
                     <div class="mb-2">
                         <label><img id="pass" src="../../../assets/img//password_icon.svg"> Password</label>
-                        <input type="password" name="password" formControlName="password" required >
+                        <input type="password" name="password" formControlName="password" required
+                            autocomplete="current-password">
                     </div>
                     <div class="mb-2">
                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                         <label class="form-check-label" for="flexCheckDefault">
-                        Remember Me
-                    </label>
+                            Remember Me
+                        </label>
                     </div>
-                    <button type="submit" [disabled]="!myform.valid"  class="btn login_btn mt-5 mb-3">Login</button>
+                    <button type="submit" [disabled]="!myform.valid" class="btn login_btn mt-5 mb-3">Login</button>
                 </div>
             </form>
         </div>

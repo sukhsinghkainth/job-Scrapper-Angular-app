@@ -270,6 +270,7 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
   getjobdata(pageNumber: number) {
     this.loading = true;
     this.joblistService.jobData(pageNumber).subscribe((res) => {
+      console.log(res.body)
       this.loading = false
       this.totalJobs = res.body.total_jobs;
       this.jobbsdata = res.body.jobs;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../httpservice/http.service';
-import { IFollowJobs, Iremarks } from 'src/app/interface/interfaces';
+import { IFollowJobs, IJob, Iremarks } from 'src/app/interface/interfaces';
 
 @Injectable({
   providedIn: 'root'

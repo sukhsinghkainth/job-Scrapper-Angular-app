@@ -1,19 +1,9 @@
+
 interface AdminAction {
     follow_up: boolean;
     not_interested: boolean;
   }
   
-  interface Company {
-    _id: string;
-    company_address: string;
-    company_contact: string;
-    company_email: string;
-    company_name: string;
-    company_size: string;
-    company_type: string;
-    company_website: string;
-    source_name: string;
-  }
   
  export interface IJob {
     _id: string;
@@ -49,7 +39,45 @@ export interface Iremarks {
     not_intrested : boolean
   }
   export interface Ilogin{
-    // email : string,
-    // password : string,
+    email : string,
+    password : string,
     token? : string
   }
+
+  interface Message {
+    companies: Company[];
+    items_per_page: number;
+    name: string;
+    page: number;
+    total_companies: number;
+  }
+  
+  export interface Company {
+    _id: string;
+    company_address: string;
+    company_contact: string;
+    company_email: string;
+    company_name: string;
+    company_size: string;
+    company_type: string;
+    company_website: string;
+    source_name: string;
+  }
+  
+
+
+  // src/app/interface/interfaces.ts
+
+export interface UpdateCompanyRequest {
+  companyId: string;
+  companyName: string;
+  companyemail: string;
+  companySize: string;
+  companyType: string;
+  companyContact: string;
+}
+
+export interface UpdateCompanyResponse {
+  success: boolean;
+  message: string;
+}

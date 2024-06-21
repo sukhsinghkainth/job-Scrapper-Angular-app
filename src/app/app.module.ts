@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MainComponent } from './components/main/main.component';
 import { JoblistingComponent } from './components/joblisting/joblisting.component';
-import { CompinesListComponent } from './components/compines-list/compines-list.component';
 import { LogComponent } from './components/log/log.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LoginComponent } from './components/login/login.component';
@@ -17,6 +16,8 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { FormsModule } from '@angular/forms';
 import { JobscardComponent } from './components/joblisting/jobscard/jobscard.component';
 import { CustomInterceptor } from './services/interceptor/httpinterceptor';
+import { HomecardsComponent } from './components/main/homecards/homecards.component';
+import { CompaniesComponent } from './components/companies/companies.component';
 
 @NgModule({
   declarations: [
@@ -24,13 +25,14 @@ import { CustomInterceptor } from './services/interceptor/httpinterceptor';
     HeaderComponent,
     MainComponent,
     JoblistingComponent,
-    CompinesListComponent,
     LogComponent,
     FooterComponent,
     LoginComponent,
     PaginationComponent,
     LoaderComponent,
     JobscardComponent,
+    HomecardsComponent,
+    CompaniesComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,7 @@ import { CustomInterceptor } from './services/interceptor/httpinterceptor';
     FormsModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor , multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

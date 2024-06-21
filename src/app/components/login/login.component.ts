@@ -1,7 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Ilogin } from 'src/app/interface/interfaces';
 import { AuthService } from 'src/app/services/authService/auth.service';
 
 @Component({
@@ -11,27 +12,35 @@ import { AuthService } from 'src/app/services/authService/auth.service';
 })
 
 export class LoginComponent {
-  loginform: FormGroup;
-
+  // strictly typed forms 
+  loginform = this.fb.nonNullable.group({
+    email: ["", Validators.required],
+    password: ['', Validators.required]
+  })
   constructor
     (
       private fb: FormBuilder,
       private auth: AuthService,
       private router: Router
-    ) {
-    this.loginform = this.fb.group({
-      email: ['', Validators.required,],
-      password: ['', Validators.required,]
-    })
-  }
+    ) { }
   onsubmit() {
-    const { email, password }: { email: string; password: string } = this.loginform.value;
-    this.auth.login(email, password).subscribe((res) => {
-      this.auth.setItem(res.body?.token ?? "")
-      this.router.navigate(['/']);
-    }, (error: HttpErrorResponse) => {
-      console.error(error)
-    })
+    const { email, password } = this.loginform.value as Ilogin;
+    this.auth.login(email, password).subscribe({
+      next: (res) => {
+        // Handle successful response here
+        if (res.body?.token) {
+          this.auth.setItem(res.body.token);
+          this.router.navigate(['/']);
+        }
+        else {
+          alert("Invalid Credentials");
+        }
+      },
+      error: (error: HttpErrorResponse) => {
+        // Handle error here
+        console.error(error);
+      }
+    });
   }
 }
 

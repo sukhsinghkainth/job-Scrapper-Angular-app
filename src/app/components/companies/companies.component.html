@@ -2,8 +2,7 @@
     <section class="section dashboard">
         <div class="row">
             <div class="col-lg-12">
-                <table class="table table-striped table-hover company_detail_table input_back_none mb-4"
-                    id="companyTable">
+                <table class="table table-striped table-hover company_detail_table input_back_none mb-4" id="companyTable">
                     <thead>
                         <tr>
                             <th scope="col">Company Name</th>
@@ -15,48 +14,52 @@
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
-
                     <tbody>
-
-                        <tr class="input_back_none" data-href="/admin/company/company_details/6630d67d8512e5f402223dc1">
+                        <tr class="input_back_none" *ngFor="let company of companies">
                             <td>
-                                <input type="text" value="" id="companyName" readonly disabled>
-                                <input type="hidden" name="companyId" id="companyId" value="6630d67d8512e5f402223dc1">
+                                <input type="text" [(ngModel)]="company.company_name"  [class.input_edit]="editingStates[company._id]">
+                                <input type="hidden" name="companyId" [value]="company._id">
                             </td>
                             <td class="tr">
                                 <div>
-                                    <input type="email" value="" id="companyEmail" class=" require" readonly disabled>
+                                    <input type="email" [(ngModel)]="company.company_email"  [class.input_edit]="editingStates[company._id]" [class]="{'require': !company.company_email}" [readonly]="!editingStates[company._id]" [disabled]="!editingStates[company._id]">
                                 </div>
                                 <div>
-                                    <a href="" target="_blank" id="visitWebsiteLink">
-                                        <label id="companyUrlLabel"></label>
+                                    <a [href]="company.company_website" target="_blank" id="visitWebsiteLink">
+                                        <label>{{company.company_website}}</label>
                                     </a>
-                                    <textarea id="companyUrl" class="company_url " style="display:none;"></textarea>
+                                    <textarea id="companyUrl" class="company_url " [(ngModel)]="company.company_website" [readonly]="!editingStates[company._id]" [disabled]="!editingStates[company._id]" [class.input_edit]="editingStates[company._id]" style="display: inline;" [class.input_edit]="editingStates[company._id]"></textarea>
                                 </div>
                             </td>
-                            <td><input type="text" pattern="[0-9]{10}" title="10-digit phone number" id="companyContact"
-                                    name="companyContact" value="" readonly disabled></td>
-                            <td><input type="text" name="companyType" id="companyType" value="Finances and insurance"
-                                    readonly disabled></td>
-                            <td><input type="text" name="companyAddress" id="companyAddress" value="" readonly disabled>
+                            <td>
+                                <input type="text" pattern="[0-9]{10}" title="10-digit phone number" [(ngModel)]="company.company_contact" #companyContactInput [readonly]="!editingStates[company._id]" [disabled]="!editingStates[company._id]" [class.input_edit]="editingStates[company._id]" name="companyContact">
                             </td>
-                            <td><input type="text" name="companySize" class=" require" id="companySize" value=""
-                                    readonly disabled></td>
-
+                            <td>
+                                <input type="text" name="companyType" [(ngModel)]="company.company_type"  [readonly]="!editingStates[company._id]" [disabled]="!editingStates[company._id]" [class.input_edit]="editingStates[company._id]">
+                            </td>
+                            <td>
+                                <input type="text" name="companyAddress" [(ngModel)]="company.company_address"  [readonly]="!editingStates[company._id]" [disabled]="!editingStates[company._id]" [class.input_edit]="editingStates[company._id]">
+                            </td>
+                            <td>
+                                <input type="text" name="companySize" class="require" [(ngModel)]="company.company_size"  [readonly]="!editingStates[company._id]" [disabled]="!editingStates[company._id]" [class.input_edit]="editingStates[company._id]" [class]="{'require': !company.company_size}">
+                            </td>
                             <td class="show_hide">
-                                <a href="#" class="edit_table ed"><i class="bx bxs-edit"></i></a>
-                                <a href="#" class="show dn" id="saveComp"><i class="bi bi-save-fill"></i></a>
-                                <a href="/admin/company/company_details/6630d67d8512e5f402223dc1" class="show"><i
-                                        class="bx bx-show"></i></a>
-                                <a href="#" class="hide dn"><i class="bx bx-hide"></i></a>
+                                <a class="edit_table ed" (click)="toggleEditState(company._id)">
+                                    <i [class]="editingStates[company._id] ? 'bi bi-save-fill' : 'bx bxs-edit'"></i>
+                                </a>
+                                <a class="show"><i class="bx bx-show"></i></a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                
 
-           
-   <!-- parent.component.html -->
-<app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChanged)="onPageChange($event)"></app-pagination>
+
+                <!-- parent.component.html -->
+                <app-pagination [currentPage]="currentPage" [totalPages]="totalPages"
+                    (pageChanged)="onPageChange($event)"></app-pagination>
+
+
 
 
                 <!-- <nav aria-label="Page navigation example">

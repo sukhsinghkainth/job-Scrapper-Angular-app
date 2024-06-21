@@ -11,7 +11,7 @@ export class HeaderComponent {
     private router: Router
   ) { }
 
-  serach = '';
+  serach:string = '';
  
   toggleSidebar() {
     const body = this.el.nativeElement.ownerDocument.body;

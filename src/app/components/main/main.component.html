@@ -1,4 +1,3 @@
-<p>main works!</p>
 <main id="main" class="main">
 
 
@@ -12,50 +11,14 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-xxl-4 col-md-6 mt-3">
-                                        <div class=" info-card sales-card lght_blue">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Number of Jobs</h5>
-
-                                                <div class="d-flex align-items-center">
-                                                    <div
-                                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center blue_grad">
-                                                        <i class="bi bi-journal-text"></i>
-                                                    </div>
-                                                    <div class="ps-3">
-                                                        <h6>
-                                                            {{numbers_jobs}}
-                                                        </h6>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div><!-- End Sales Card -->
-
-                                    <!-- Revenue Card -->
-                                    <div class="col-xxl-4 col-md-6 mt-3">
-                                        <div class=" info-card revenue-card lght_purple">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Number of Company's</h5>
-
-                                                <div class="d-flex align-items-center">
-                                                    <div
-                                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center purple_grad">
-                                                        <i class="bi bi-bar-chart"></i>
-                                                    </div>
-                                                    <div class="ps-3">
-                                                        <h6>
-                                                            {{comp_count}}
-                                                        </h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div><!-- End Revenue Card -->
-
+                                    <!-- number of jobs -->
+                                    <app-homecards ngClass="col-xxl-4 col-md-6 mt-3" [cardColor]="'lght_blue'"
+                                        [cardTitle]="'Number of Jobs'" [iconColor]="'blue_grad'"
+                                        [icon]="'bi bi-journal-text'" [Description]="numbers_jobs"></app-homecards>
+                                    <!-- number of companies -->
+                                    <app-homecards class="col-xxl-4 col-md-6 mt-3" [cardColor]="'lght_purple'"
+                                        [cardTitle]="'Number of Company\'s'" [iconColor]="'purple_grad'"
+                                        [icon]="'bi bi-bar-chart'" [Description]="comp_count"></app-homecards>
                                     <!-- Customers Card -->
                                     <div class="col-xxl-4 col-xl-12 mt-3">
 
