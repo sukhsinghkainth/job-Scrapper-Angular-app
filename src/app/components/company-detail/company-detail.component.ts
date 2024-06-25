@@ -72,27 +72,30 @@ export class CompanyDetailComponent {
     console.log(this.companyId)
     this.loading = true;
     this.companiesService.companiesDetails(this.companyId).subscribe((res) => {
-      this.jobs = res.body.company_jobs;
-      this.company_name = res.body.company_detail.company_name;
-      this.company_type = res.body.company_detail.company_type
-      this.company_address = res.body.company_detail.company_address
-      this.company_contact = Array.isArray(res.body.company_detail.company_contact)
-        ? res.body.company_detail.company_contact.map((contact: { person_email: string; person_phone: string; person_title: string; }) => {
-          const values = [];
-          if (contact.person_email) values.push(contact.person_email);
-          if (contact.person_phone) values.push(contact.person_phone);
-          if (contact.person_title) values.push(contact.person_title);
-          return values.join(', ');
-        }).join(', ')
-        : res.body.company_detail.company_contact;
-      this.company_email = res.body.company_detail.company_email
-      this.company_size = res.body.company_detail.company_size
-      this.company_website = res.body.company_detail.company_website
-      this.company_location = res.body.company_detail.company_location
-      console.log(res.body.company_jobs)
-      this.jobs = res.body.company_jobs
-      this.latitude = res.body.location.latitude;
-      this.longitude = res.body.location.longitude;
+      if(res.body){
+        this.jobs = res.body.company_jobs;
+        this.company_name = res.body.company_detail.company_name;
+        this.company_type = res.body.company_detail.company_type
+        this.company_address = res.body.company_detail.company_address
+        this.company_contact = Array.isArray(res.body.company_detail.company_contact)
+          ? res.body.company_detail.company_contact.map((contact: { person_email: string; person_phone: string; person_title: string; }) => {
+            const values = [];
+            if (contact.person_email) values.push(contact.person_email);
+            if (contact.person_phone) values.push(contact.person_phone);
+            if (contact.person_title) values.push(contact.person_title);
+            return values.join(', ');
+          }).join(', ')
+          : res.body.company_detail.company_contact;
+        this.company_email = res.body.company_detail.company_email
+        this.company_size = res.body.company_detail.company_size
+        this.company_website = res.body.company_detail.company_website
+        this.company_location = res.body.company_detail.company_location ?? ""
+        console.log(res.body.company_jobs)
+        this.jobs = res.body.company_jobs
+        this.latitude = res.body.location.latitude;
+        this.longitude = res.body.location.longitude;
+      }
+    
       if (this.latitude && this.longitude) {
         this.loadMap();
       }

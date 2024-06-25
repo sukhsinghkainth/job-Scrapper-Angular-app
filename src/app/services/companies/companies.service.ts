@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../httpservice/http.service';
-import { UpdateCompanyRequest, UpdateCompanyResponse } from 'src/app/interface/interfaces';
+import { CompanyDetailResponse, UpdateCompanyRequest, UpdateCompanyResponse, comp_lis_res } from 'src/app/interface/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,13 @@ import { UpdateCompanyRequest, UpdateCompanyResponse } from 'src/app/interface/i
 export class CompaniesService {
   constructor(private http: HttpService) { }
   companiesData(number: number) {
-    return this.http.get<any>(`admin/company/companies_list?page=${number}`)
+    return this.http.get<comp_lis_res>(`admin/company/companies_list?page=${number}`)
   }
   updateCompaniesData(data: UpdateCompanyRequest) {
     return this.http.postt<UpdateCompanyRequest, UpdateCompanyResponse>
       ('admin/company/update_company_detail_ajax', data)
   }
-  companiesDetails(Cid : string){
-      return this.http.get<any>(`admin/company/company_details/${Cid}`)
+  companiesDetails(Cid: string) {
+    return this.http.get<CompanyDetailResponse>(`admin/company/company_details/${Cid}`)
   }
 }

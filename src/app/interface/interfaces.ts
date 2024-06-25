@@ -62,6 +62,7 @@ export interface Iremarks {
     company_type: string;
     company_website: string;
     source_name: string;
+    company_location? : string
   }
   
 
@@ -80,4 +81,62 @@ export interface UpdateCompanyRequest {
 export interface UpdateCompanyResponse {
   success: boolean;
   message: string;
+}
+
+
+
+
+interface Message {
+  companies: Company[];
+  items_per_page: number;
+  name: string;
+  page: number;
+  total_companies: number;
+}
+
+export interface comp_lis_res {
+  Message: Message;
+}
+
+
+
+
+interface Job {
+  _id: string;
+  company_id: string;
+  date_of_post: string;
+  date_of_scrap: string;
+  job_description: string;
+  job_id: string;
+  job_title: string;
+  location: string;
+  salary_range: string;
+  source_name: string;
+  tags: string;
+  work_experience: string;
+}
+
+interface CompanyJob {
+  _id: string;
+  company_address: string;
+  company_contact: string;
+  company_email: string;
+  company_name: string;
+  company_size: string;
+  company_type: string;
+  company_website: string;
+  source_name: string;
+  jobs: Job[];
+}
+
+interface Location {
+  longitude : number;
+  latitude : number;
+}
+
+export interface CompanyDetailResponse {
+  company_detail: Company;
+  company_jobs: CompanyJob[];
+  location: Location;
+  name: string | null;
 }

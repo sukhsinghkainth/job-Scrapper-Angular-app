@@ -21,7 +21,7 @@ export class CompaniesComponent implements OnInit {
     editingStates: { [key: string]: boolean; } = { companyId: false }; // Map company ID to editing state
 
     seeMore(id: string) {
-        this.router.navigate(['admin/company/company_details', id],  )
+        this.router.navigate(['admin/company/company_details', id],)
     }
 
     // Method to toggle the editing state
@@ -55,13 +55,25 @@ export class CompaniesComponent implements OnInit {
     loadCompanies(pageNumber: number) {
         this.loading = true;
         this.companyService.companiesData(pageNumber).subscribe(res => {
-            this.companies = res.body.Message.companies;
-            this.total_companies = res.body.Message.total_companies;
-            this.totalPages = Math.ceil(this.total_companies / 10);
-            // this.companies.forEach(company => {
-            //   this.editingStates[company._id] = false;
-            // });
-            this.loading = false;
+            if (res.body?.Message) {
+                this.companies = res.body.Message.companies.map(company =>({
+                    ...company,
+                    company_contact: Array.isArray(company.company_contact) ?
+                    company.company_contact.map((contact: { person_email: string; person_phone: string; person_title: string; }) => {
+                        const values = [];
+                        if (contact.person_email) values.push(contact.person_email);
+                        if (contact.person_phone) values.push(contact.person_phone);
+                        if (contact.person_title) values.push(contact.person_title);
+                        console.log(values)
+                        return values.join(', ');
+                      }).join(', ')
+                      : company.company_contact
+                }));
+                console.log(this.companies)
+                this.total_companies = res.body.Message.total_companies;
+                this.totalPages = Math.ceil(this.total_companies / 10);
+                this.loading = false;
+            }
             // https://admin.fisca-quest.be/api/admin/company/company_details/65c124a90237dac086d2a8bf
         });
     }
