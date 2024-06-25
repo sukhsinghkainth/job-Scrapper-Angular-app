@@ -18,6 +18,7 @@ import { JobscardComponent } from './components/joblisting/jobscard/jobscard.com
 import { CustomInterceptor } from './services/interceptor/httpinterceptor';
 import { HomecardsComponent } from './components/main/homecards/homecards.component';
 import { CompaniesComponent } from './components/companies/companies.component';
+import { CompanyDetailComponent } from './components/company-detail/company-detail.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { CompaniesComponent } from './components/companies/companies.component';
     JobscardComponent,
     HomecardsComponent,
     CompaniesComponent,
+    CompanyDetailComponent,
   ],
   imports: [
     BrowserModule,

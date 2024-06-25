@@ -18,4 +18,7 @@ export class CompaniesService {
     return this.http.postt<UpdateCompanyRequest, UpdateCompanyResponse>
       ('admin/company/update_company_detail_ajax', data)
   }
+  companiesDetails(Cid : string){
+      return this.http.get<any>(`admin/company/company_details/${Cid}`)
+  }
 }

@@ -1,4 +1,4 @@
-<div *ngIf="!loading && !job.isNotInterested" class="card job_listing" [attr.data-jobid]="job._id"  (click)="onjobclick(job._id)" >
+<div *ngIf="!loading && !job?.isNotInterested" class="card job_listing" [attr.data-jobid]="job._id"  (click)="onjobclick(job._id)" >
     <h4>{{ job.job_title }}</h4>
     <h5>{{ job.source_name }}</h5>
     <h6>

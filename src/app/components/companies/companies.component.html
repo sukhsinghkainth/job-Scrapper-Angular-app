@@ -47,7 +47,7 @@
                                 <a class="edit_table ed" (click)="toggleEditState(company._id)">
                                     <i [class]="editingStates[company._id] ? 'bi bi-save-fill' : 'bx bxs-edit'"></i>
                                 </a>
-                                <a class="show"><i class="bx bx-show"></i></a>
+                                <a class="show"><i class="bx bx-show" (click)="seeMore(company._id)" ></i></a>
                             </td>
                         </tr>
                     </tbody>

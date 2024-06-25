@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Company, UpdateCompanyRequest } from 'src/app/interface/interfaces';
 import { CompaniesService } from 'src/app/services/companies/companies.service';
 
@@ -11,13 +12,17 @@ export class CompaniesComponent implements OnInit {
     loading!: boolean;
     companies!: Company[];
     currentPage = 1;
-    totalPages!: number; // This should be dynamic based on the API response
+    totalPages!: number; //  dynamic based on the API response
     total_companies!: number;
     onPageChange(newPage: number): void {
         this.currentPage = newPage;
         this.loadCompanies(this.currentPage);
     }
     editingStates: { [key: string]: boolean; } = { companyId: false }; // Map company ID to editing state
+
+    seeMore(id: string) {
+        this.router.navigate(['admin/company/company_details', id],  )
+    }
 
     // Method to toggle the editing state
     toggleEditState(companyId: string) {
@@ -45,7 +50,7 @@ export class CompaniesComponent implements OnInit {
     ngOnInit(): void {
         this.loadCompanies(this.currentPage);
     }
-    constructor(private companyService: CompaniesService) {
+    constructor(private companyService: CompaniesService, private router: Router) {
     }
     loadCompanies(pageNumber: number) {
         this.loading = true;
@@ -57,6 +62,7 @@ export class CompaniesComponent implements OnInit {
             //   this.editingStates[company._id] = false;
             // });
             this.loading = false;
+            // https://admin.fisca-quest.be/api/admin/company/company_details/65c124a90237dac086d2a8bf
         });
     }
 }

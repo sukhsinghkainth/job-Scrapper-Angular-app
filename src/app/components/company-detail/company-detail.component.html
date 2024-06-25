@@ -1,0 +1,212 @@
+<main id="main" class="main">
+    <span class="back_link">
+        <a routerLink="/admin/company">
+            <i class="bi bi-chevron-left"></i> Back to company list page</a>
+    </span>
+    <section class="section dashboard">
+        <div class="card">
+            <div class="card-body company_list">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="company_logo text-center d-flex align-items-center">
+                            <img src="" alt="Company Image">
+                        </div>
+                    </div>
+                    <div class="col-lg-10">
+                        <h5 class="card-title">
+                            {{company_name}}
+                        </h5>
+                        <div class="company_details">
+                            <span *ngIf="company_website">
+                                <img src="../../../assets/img/web_browser_icon.svg">
+                                <a href="https://ab-inbev.be"> {{company_website}} </a>
+                            </span>
+                            <span *ngIf="company_size">
+                                <img src="../../../assets/img//employee_icon.svg">
+                                {{company_size}}
+                            </span>
+                            <span *ngIf="company_address">
+                                <img src="../../../assets/img//location_icon.svg">
+                                {{company_address}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="nav nav-pills mt-4" id="pills-tab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+                                            data-bs-target="#pills-home" type="button" role="tab"
+                                            aria-controls="pills-home" aria-selected="true">Company Detail
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                                            data-cid="661cfcb27d67513acd4f0bd1" data-bs-target="#pills-profile"
+                                            type="button" role="tab" aria-controls="pills-profile"
+                                            aria-selected="false">
+                                            Jobs
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content pt-2" id="myTabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="home-tab">
+                        <form  id="companyForm">
+                            <button class="btn dropdown_btn" type="button" (click)="toogleEdit()">
+                                {{isEditing ? 'save' : 'Edit'}}
+                            </button>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <table class="table job_listing_table company_list_table" [class.input_back_none]="!isEditing" id="tabelHeader">
+                                        <tbody>
+                                            <tr>
+                                                <td>Company Name</td>
+                                                <td>
+                                                    <input type="text" id="companyName"  [class.input_disable]="!isEditing"
+                                                        name="companyName" 
+                                                        [(ngModel)]="company_name"  [value]="company_name">
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Company Email</td>
+                                                <td [ngClass]="{'bg-error':!company_email}">
+                                                    <input type="text" title="Invalid email address" id="companyEmail"
+                                                    [class.input_disable]="!isEditing" name="companyEmail" 
+                                                        placeholder="Please enter company email"
+                                                        [value]="company_email" 
+                                                        [(ngModel)]="company_email">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Company contact No</td>
+                                                <td>
+                                                    <!--   pattern="[0-9]{10}"-->
+                                                    <input type="text"  [class.input_disable]="!isEditing"
+                                                        title="Please enter a 10-digit phone number" id="companyContact"
+                                                        name="companyContact"
+                                                        [(ngModel)]="company_contact"
+                                                          [value]="company_contact">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Website URL</td>
+                                                <td> <a href="https://ab-inbev.be" target="_blank"
+                                                        id="visitWebsiteLink">
+                                                        <input  [class.input_disable]="!isEditing" type="url" name="companyUrl"
+                                                             id="companyUrl"
+                                                             [(ngModel)]="company_website"
+                                                            style="color: #009DE2 !important; cursor: pointer !important"
+                                                            [value]="company_website">
+                                                    </a>
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Company Type</td>
+                                                <td>
+                                                    <input [class.input_disable]="!isEditing" type="text" name="companyType"
+                                                        id="companyType" [(ngModel)]="company_type" [value]="company_type">
+
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Number of Employees</td>
+                                                <td>
+                                                    <strong>
+                                                        <input [class.input_disable]="!isEditing" type="text" name="companySize"
+                                                            id="companySize"  [(ngModel)]="company_size" [value]="company_size">
+                                                    </strong>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Location</td>
+                                                <td [ngClass]="{'bg-error':!company_address}">
+                                                    <input  [class.input_disable]="!isEditing" type="text" name="companyAddress"
+                                                        id="companyAddress"  [(ngModel)]="company_address" [value]="company_address">
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <app-loader *ngIf="loading" style="    height: 100%;
+                           display: flex;
+                           justify-content: center;
+                           align-items: center;"></app-loader>
+
+                                    <div id="map" style="border:0;  height: 350px;"></div>
+                                    <!-- <script>
+                                        var map = L.map('map').setView([50.8866229,
+                                            4.706972
+                                        ], 13);
+                                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+                                        }).addTo(map);
+
+                                        // Adding a marker to the map
+                                        L.marker([50.8866229, 4.706972]).addTo(map)
+                                            .bindPopup('Brouwerijplein,1, Leuven, BE.<br>')
+                                            .openPopup();
+
+                                        function onMapClick(e) {
+                                            popup
+                                                .setLatLng(e.latlng)
+                                                .setContent("You clicked the map at " +
+                                                    e.latlng.toString())
+                                                .openOn(map);
+                                        }
+
+                                        map.on('click', onMapClick);
+                                    </script> -->
+
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="tab-content pt-2" id="jobListingsContainer">
+                    <div class="tab-pane fade " id="pills-profile" role="tabpanel" aria-labelledby="profile-tab">
+
+                        <div class="card job_listing" *ngFor="let job of jobs">
+                            <!-- job title  -->
+
+                            <h4> {{job.jobs.job_title}}</h4>
+
+                            <h5>
+                                {{job.jobs.source_name}}
+                            </h5>
+                            <h6>AB InBev</h6>
+                            <div class="job_location">
+                                <!-- location  -->
+                                <i class="bx bxs-map"></i> {{job.jobs.location}}
+                            </div>
+                            <p></p>
+                            <div class="posted_date">
+                                Posted Date: {{job.jobs.date_of_post }}
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</main>
