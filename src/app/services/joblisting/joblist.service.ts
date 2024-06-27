@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../httpservice/http.service';
-import { IFollowJobs, IJob, Iremarks } from 'src/app/interface/interfaces';
+import { IFollowJobs, IJob, Iremarks, RemakrsByuser, Remark, RootObject, jobDetails, remarks, updateJob } from 'src/app/interface/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -8,27 +8,27 @@ import { IFollowJobs, IJob, Iremarks } from 'src/app/interface/interfaces';
 export class JoblistService {
   constructor(private http : HttpService) { }
   jobData(number : number){     
-    return this.http.get<any>(`admin/job_listing?page=${number}`)
+    return this.http.get<RootObject>(`admin/job_listing?page=${number}`)
   }
   jobDetails(id:number){
-    return this.http.get<any>(`admin/get_job_details/${id}`)
+    return this.http.get<jobDetails>(`admin/get_job_details/${id}`)
   }
-  jobUpdate(data:any){
-      return this.http.post<any>(`admin/update_company_details`, data )
+  jobUpdate(data:updateJob){
+      return this.http.post<updateJob>(`admin/update_company_details`, data )
   }
   jobFollow(data:IFollowJobs){
     return this.http.post<IFollowJobs>(`admin/add_action`, data )
   }
   remarkData(id:string){
-    return this.http.get<any>(`admin/get_remarks/${id}`)
+    return this.http.get<remarks>(`admin/get_remarks/${id}`)
   }
-  addRemarks(data:any){
-    return this.http.post<any>(`admin/add_remarks`,data)
+  addRemarks(data:RemakrsByuser){
+    return this.http.post<RemakrsByuser>(`admin/add_remarks`,data)
   }
   getFilters(data:any){
-     return this.http.get<any>(`admin/${data}`)
+     return this.http.get<RootObject>(`admin/${data}`)
   }
-  getSearch(data:any){
-    return this.http.get<any>(`admin/search?${data}`)
+  getSearch(data:string){
+    return this.http.get<RootObject>(`admin/search?${data}`)
   }
 }

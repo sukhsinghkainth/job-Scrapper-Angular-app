@@ -2,13 +2,15 @@ import { AfterViewChecked, Component, OnInit, isDevMode } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery'
 import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { IFollowJobs, IJob } from 'src/app/interface/interfaces';
+import { IFollowJobs, IJob, Jobb, RemakrsByuser, Remark, updateJob } from 'src/app/interface/interfaces';
 import { JoblistService } from 'src/app/services/joblisting/joblist.service';
+
 @Component({
   selector: 'app-joblisting',
   templateUrl: './joblisting.component.html',
   styleUrls: ['./joblisting.component.css']
 })
+
 export class JoblistingComponent implements AfterViewChecked, OnInit {
 
   constructor(private joblistService: JoblistService,
@@ -17,7 +19,7 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
   ) { }
 
   skills!: string[]
-  jobbsdata!: IJob[]
+  jobbsdata!: Jobb[]
   location!: string[]
   totalJobs!: number
   isEditing = false;
@@ -28,19 +30,19 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
   dateOfPost!: string
   clocation!: string
   salary!: string
-  tags!: string
+  tags!: string[]
   websiteUrl!: string
   employees!: string
   loading: boolean = false
   currentPage: number = 1;
   totalPages!: number;
   jobDescription!: string;
-  companyContact!: any;
+  companyContact!: string;
   companyId!: string
   followUp!: boolean
   notInstrested!: boolean;
   jobId!: string;
-  remarks!: any;
+  remarks!: Remark[];
   remarksbyuser!: string;
   selectedLocations: string[] = [];
   selectedSkills: string[] = [];
@@ -52,7 +54,7 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
   submitted!: string;
   toogleEdit() {
     this.isEditing = !this.isEditing;
-    const data = {
+    const data : updateJob= {
       companyId: this.companyId,
       companyContact: this.companyContact,
       companyName: this.companyName,
@@ -63,7 +65,9 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
     };
     if (!this.isEditing) {
       this.joblistService.jobUpdate(data).subscribe((res) => {
-        const updatedJob = this.jobbsdata.find(job => job._id === this.jobId);
+        console.log(res)
+
+        const updatedJob = this.jobbsdata.find((job: { _id: string; }) => job._id === this.jobId);
         if (updatedJob) {
           updatedJob.company.company_name = this.companyName;
           updatedJob.company.company_contact = this.companyContact;
@@ -82,7 +86,8 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
       not_intrested: this.notInstrested
     }
     this.joblistService.jobFollow(data).subscribe((res) => {
-      const updatedJob = this.jobbsdata.find(job => job._id === this.jobId);
+      // console.log(res)
+      const updatedJob = this.jobbsdata.find((job: { _id: string; }) => job._id === this.jobId);
       if (updatedJob) {
         updatedJob.admin_action = {
           follow_up: this.followUp,
@@ -199,10 +204,10 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
     console.log(queryString)
     this.joblistService.getFilters(`${queryFilter}?page=${this.currentPage}&${queryString}`).subscribe(res => {
       console.log(res.body)
-      this.totalJobs = res.body.total_jobs;
-      this.jobbsdata = res.body.jobs;
-      this.location = res.body.be_location;
-      this.skills = res.body.skills;
+      this.totalJobs = res.body!.total_jobs;
+      this.jobbsdata = res.body!.jobs;
+      this.location = res.body!.be_location;
+      this.skills = res.body!.skills;
       this.totalPages = Math.ceil(this.totalJobs / 10)
       this.loading = false;
     })
@@ -238,18 +243,21 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
       let query = `page=${this.currentPage}&job_search=${str}`
       this.joblistService.getSearch(query).subscribe(res => {
         console.log(res.body)
-        this.totalJobs = res.body.total_jobs;
-        this.jobbsdata = res.body.jobs;
-        this.location = res.body.be_location;
-        this.skills = res.body.skills;
-        this.totalPages = Math.ceil(this.totalJobs / 10)
-        this.loading = false;
+        if(res.body){
+
+          this.totalJobs = res.body.total_jobs;
+          this.jobbsdata = res.body.jobs;
+          this.location = res.body.be_location;
+          this.skills = res.body.skills;
+          this.totalPages = Math.ceil(this.totalJobs / 10)
+          this.loading = false;
+        }
       })
     }
   }
 
   submitRemark() {
-    let data = {
+    let data : RemakrsByuser = {
       job_id: this.jobId,
       remark: this.remarksbyuser
     }
@@ -262,8 +270,8 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
 
   getRemarks() {
     this.joblistService.remarkData(this.jobId).subscribe((res) => {
-      console.log(res.body.remarks)
-      this.remarks = res.body.remarks
+      console.log(res.body!.remarks)
+      this.remarks = res.body!.remarks
     })
   }
 
@@ -272,10 +280,10 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
     this.joblistService.jobData(pageNumber).subscribe((res) => {
       console.log(res.body)
       this.loading = false
-      this.totalJobs = res.body.total_jobs;
-      this.jobbsdata = res.body.jobs;
-      this.location = res.body.be_location;
-      this.skills = res.body.skills;
+      this.totalJobs = res.body!.total_jobs;
+      this.jobbsdata = res.body!.jobs;
+      this.location = res.body!.be_location;
+      this.skills = res.body!.skills;
       this.totalPages = Math.ceil(this.totalJobs / 10)
     })
   }
@@ -321,7 +329,7 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
     this.isEditing = false;
     this.jobId = String(id);
     this.getRemarks();
-    const updatedJob = this.jobbsdata.find(job => job._id === this.jobId);
+    const updatedJob = this.jobbsdata.find((job: { _id: string; }) => job._id === this.jobId);
     if (updatedJob?.admin_action) {
       this.followUp = updatedJob.admin_action.follow_up
       this.notInstrested = updatedJob.admin_action.not_interested
@@ -331,20 +339,23 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
       this.notInstrested = false;
     }
     this.joblistService.jobDetails(id).subscribe((res) => {
-      this.companyName = res.body.companyName;
-      this.companyType = res.body.companyType;
-      this.jobDescription = res.body.jobDescription
-      this.salary = res.body.salary
-      this.companyEmail = res.body.companyEmail;
-      this.websiteUrl = res.body.websiteUrl;
-      this.clocation = res.body.location;
-      this.tags = res.body.tags;
-      this.dateOfPost = res.body.dateOfPost;
-      this.employees = res.body.numEmployees;
-      this.companyContact = res.body.companyContact
-      this.companyId = res.body.companyId;
+      console.log(res.body)
+      if(res.body){
+        this.companyName = res.body.companyName;
+        this.companyType = res.body.companyType;
+        this.jobDescription = res.body.jobDescription
+        this.salary = res.body.salary
+        this.companyEmail = res.body.companyEmail;
+        this.websiteUrl = res.body.websiteUrl;
+        this.clocation = res.body.location;
+        this.tags = res.body.tags;
+        this.dateOfPost = res.body.dateOfPost;
+        this.employees = res.body.numEmployees;
+        this.companyContact = res.body.companyContact
+        this.companyId = res.body.companyId;
+      }
       if (Array.isArray(this.companyContact)) {
-        this.companyContact = this.companyContact.map((contact: any) => contact.company_number)
+        this.companyContact = this.companyContact.map((contact: { company_number: string }) => contact.company_number)
           .filter(number => number).join(', ')
       }
     })

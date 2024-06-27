@@ -41,7 +41,7 @@ export class CompaniesComponent implements OnInit {
                     companyContact: companyData.company_contact
                 }
                 this.companyService.updateCompaniesData(data).subscribe((res) => {
-                    console.log(res.body?.message)
+                    // console.log(res.body?.message)
                 })
             }
         }
@@ -69,7 +69,7 @@ export class CompaniesComponent implements OnInit {
                       }).join(', ')
                       : company.company_contact
                 }));
-                console.log(this.companies)
+                // console.log(this.companies)
                 this.total_companies = res.body.Message.total_companies;
                 this.totalPages = Math.ceil(this.total_companies / 10);
                 this.loading = false;

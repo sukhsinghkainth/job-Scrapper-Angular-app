@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CompaniesService } from 'src/app/services/companies/companies.service';
 import * as L from 'leaflet';
-import { UpdateCompanyRequest } from 'src/app/interface/interfaces';
+import { CompanyJob, Job, UpdateCompanyRequest } from 'src/app/interface/interfaces';
 
 @Component({
   selector: 'app-company-detail',
@@ -12,7 +12,7 @@ import { UpdateCompanyRequest } from 'src/app/interface/interfaces';
 export class CompanyDetailComponent {
   companyId!: string;
   companyJobs: string = ""
-  jobs: any
+  jobs!: CompanyJob[]
   company_name: string = ""
   company_type: string = ""
   company_address: string = ""
@@ -49,7 +49,7 @@ export class CompanyDetailComponent {
       companyContact: this.company_contact
     }
     this.companiesService.updateCompaniesData(data).subscribe((res) => {
-      console.log(res.body?.message)
+      // console.log(res.body?.message)
     })
   }
 
@@ -69,7 +69,6 @@ export class CompanyDetailComponent {
   }
   ngOnInit() {
     this.companyId = this.route.snapshot.paramMap.get('companyId') ?? "";
-    console.log(this.companyId)
     this.loading = true;
     this.companiesService.companiesDetails(this.companyId).subscribe((res) => {
       if(res.body){
@@ -90,7 +89,6 @@ export class CompanyDetailComponent {
         this.company_size = res.body.company_detail.company_size
         this.company_website = res.body.company_detail.company_website
         this.company_location = res.body.company_detail.company_location ?? ""
-        console.log(res.body.company_jobs)
         this.jobs = res.body.company_jobs
         this.latitude = res.body.location.latitude;
         this.longitude = res.body.location.longitude;
