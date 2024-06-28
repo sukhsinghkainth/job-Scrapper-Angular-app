@@ -11,10 +11,10 @@ export class HeaderComponent {
     private router: Router
   ) { }
 
-  serach:string = '';
- 
+  serach: string = '';
+
   toggleSidebar() {
-    const body = this.el.nativeElement.ownerDocument.body;
+    const body: HTMLElement = this.el.nativeElement.ownerDocument.body;
     if (body.classList.contains('toggle-sidebar')) {
       this.renderer.removeClass(body, 'toggle-sidebar');
     } else {
@@ -22,15 +22,15 @@ export class HeaderComponent {
     }
   }
 
-  onSearchChange(term:string){
-     this.serach = term;
+  onSearchChange(term: string) {
+    this.serach = term;
   }
- goto(userInput : string){
-  console.log(userInput)
-  this.router.navigate(['/admin/job_listing'], { queryParams: { job_search: userInput } });
- }
- logout(){
-  localStorage.removeItem('token')
-  this.router.navigateByUrl("/login")
- }
+  goto(userInput: string) {
+    console.log(userInput)
+    this.router.navigate(['/admin/job_listing'], { queryParams: { job_search: userInput } });
+  }
+  logout() {
+    localStorage.removeItem('token')
+    this.router.navigateByUrl("/login")
+  }
 }

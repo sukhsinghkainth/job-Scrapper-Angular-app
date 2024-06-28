@@ -7,8 +7,6 @@ import { CompanyDetailResponse, UpdateCompanyRequest, UpdateCompanyResponse, com
 })
 
 
-// https://admin.fisca-quest.be/admin/company/companies_list?page=2
-
 export class CompaniesService {
   constructor(private http: HttpService) { }
   companiesData(number: number) {
