@@ -6,9 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./homecards.component.css']
 })
 export class HomecardsComponent {
-redirect(title :string) {
-  console.log('hello',title)
-}
+
     @Input() cardTitle : string = "";
     @Input() Description : string = "";
     @Input() cardColor: string = "";

@@ -23,10 +23,10 @@ export class LogdayComponent implements OnInit{
     }
     getlogs() {
       let query = `${this.year}/${this.month}/${this.day}/`
-      console.log(query)
+      // console.log(query)
       this.logService.getLogs(query).subscribe((res) => {
         this.logFiles =  res.body?.items!
-        console.log(res.body)
+        // console.log(res.body)
       })
     }
 }

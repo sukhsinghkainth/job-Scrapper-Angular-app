@@ -65,7 +65,7 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
     };
     if (!this.isEditing) {
       this.joblistService.jobUpdate(data).subscribe((res) => {
-        console.log(res)
+        // console.log(res)
 
         const updatedJob = this.jobbsdata.find((job: { _id: string; }) => job._id === this.jobId);
         if (updatedJob) {
@@ -201,9 +201,9 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
       //  tags 
     }
     this.loading = true;
-    console.log(queryString)
+    // console.log(queryString)
     this.joblistService.getFilters(`${queryFilter}?page=${this.currentPage}&${queryString}`).subscribe(res => {
-      console.log(res.body)
+      // console.log(res.body)
       this.totalJobs = res.body!.total_jobs;
       this.jobbsdata = res.body!.jobs;
       this.location = res.body!.be_location;
@@ -236,13 +236,13 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
   // page=2&job_search=you+can+say+what+ever
   searchJobs() {
     if (this.searchTerm) {
-      console.log(this.searchTerm)
+      // console.log(this.searchTerm)
       // removig spaces 
       let str = this.searchTerm.trim().replace(/\s+/g, ' ').split(' ').join('+');
       this.loading = true;
       let query = `page=${this.currentPage}&job_search=${str}`
       this.joblistService.getSearch(query).subscribe(res => {
-        console.log(res.body)
+        // console.log(res.body)
         if(res.body){
 
           this.totalJobs = res.body.total_jobs;
@@ -270,7 +270,7 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
 
   getRemarks() {
     this.joblistService.remarkData(this.jobId).subscribe((res) => {
-      console.log(res.body!.remarks)
+      // console.log(res.body!.remarks)
       this.remarks = res.body!.remarks
     })
   }
@@ -278,7 +278,7 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
   getjobdata(pageNumber: number) {
     this.loading = true;
     this.joblistService.jobData(pageNumber).subscribe((res) => {
-      console.log(res.body)
+      // console.log(res.body)
       this.loading = false
       this.totalJobs = res.body!.total_jobs;
       this.jobbsdata = res.body!.jobs;
@@ -339,7 +339,7 @@ export class JoblistingComponent implements AfterViewChecked, OnInit {
       this.notInstrested = false;
     }
     this.joblistService.jobDetails(id).subscribe((res) => {
-      console.log(res.body)
+      // console.log(res.body)
       if(res.body){
         this.companyName = res.body.companyName;
         this.companyType = res.body.companyType;

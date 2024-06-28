@@ -19,7 +19,6 @@ export class LogyearComponent implements OnInit {
     getlogs() {
       this.logService.getLogs(`${this.year}/`).subscribe((res) => {
         this.logMonths =  res.body?.items!
-        console.log()
       })
     }
 }

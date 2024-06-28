@@ -64,7 +64,7 @@ export class CompaniesComponent implements OnInit {
                         if (contact.person_email) values.push(contact.person_email);
                         if (contact.person_phone) values.push(contact.person_phone);
                         if (contact.person_title) values.push(contact.person_title);
-                        console.log(values)
+                       
                         return values.join(', ');
                       }).join(', ')
                       : company.company_contact

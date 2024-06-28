@@ -24,7 +24,7 @@ export class LogFileComponent implements OnInit {
   }
   getlogs() {
     let query = `${this.year}/${this.month}/${this.day}/${this.logfie}/`
-    console.log(query)
+    // console.log(query)
     this.logService.getLogs(query).subscribe((res) => {
       this.logContent = res.body?.log_file!
     })

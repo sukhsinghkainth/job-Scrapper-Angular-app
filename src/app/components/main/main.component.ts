@@ -23,7 +23,7 @@ export class MainComponent implements OnInit {
 
   get() {
     this.dashService.getdata().subscribe((res) => {
-      console.log(res.body)
+      // console.log(res.body)
       let { comp_count, emp_count, name, numbers_jobs } = res.body!;
       this.comp_count = comp_count;
       this.emp_count = emp_count;

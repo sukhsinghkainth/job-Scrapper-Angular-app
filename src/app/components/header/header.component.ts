@@ -26,7 +26,7 @@ export class HeaderComponent {
     this.serach = term;
   }
   goto(userInput: string) {
-    console.log(userInput)
+  
     this.router.navigate(['/admin/job_listing'], { queryParams: { job_search: userInput } });
   }
   logout() {
