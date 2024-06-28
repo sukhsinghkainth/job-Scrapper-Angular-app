@@ -1,0 +1,11 @@
+<main id="main" class="main">
+    <div class="icon" *ngFor="let log of logs">
+        <a [routerLink]="log" style="text-decoration: none;">
+            <i [ngClass]="icon ? icon : 'bi-folder2' " style="font-size:2rem;">
+            </i>
+            {{
+            log
+            }}
+        </a>
+    </div>
+</main>

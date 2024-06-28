@@ -19,7 +19,11 @@ import { CustomInterceptor } from './services/interceptor/httpinterceptor';
 import { HomecardsComponent } from './components/main/homecards/homecards.component';
 import { CompaniesComponent } from './components/companies/companies.component';
 import { CompanyDetailComponent } from './components/company-detail/company-detail.component';
-
+import { WrapperLogComponent } from './components/wrapper-log/wrapper-log.component';
+import { LogyearComponent } from './components/logyear/logyear.component';
+import { LogMonthComponent } from './components/log-month/log-month.component';
+import { LogdayComponent } from './components/logday/logday.component';
+import { LogFileComponent } from './components/log-file/log-file.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,6 +39,11 @@ import { CompanyDetailComponent } from './components/company-detail/company-deta
     HomecardsComponent,
     CompaniesComponent,
     CompanyDetailComponent,
+    WrapperLogComponent,
+    LogyearComponent,
+    LogMonthComponent,
+    LogdayComponent,
+    LogFileComponent
   ],
   imports: [
     BrowserModule,

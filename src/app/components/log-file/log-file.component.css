@@ -1,0 +1,11 @@
+.file-viewer {
+    font-family: monospace;
+    white-space: wrap;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 20px auto;
+
+    background-color: #f9f9f9;
+    overflow-y: scroll;
+    height: 500px; /* Adjust height as needed */
+}
